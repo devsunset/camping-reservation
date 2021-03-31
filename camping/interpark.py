@@ -69,8 +69,8 @@ class Interpark():
                 nextday = current  + datetime.timedelta(days=n)             
                 dw = nextday.weekday()
                 # print(current_playseq+n , nextday.strftime('%Y-%m-%d'),DAY_OF_WEEK[dw])
-                # 6. INTERPARK_SITE_CHECK_DAY check - Friday (4) , Saturday (5),  Sunday (6)
-                if (config.INTERPARK_SITE_CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(nextday.strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(nextday.strftime('%Y-%m-%d'),site_name[i]) :
+                # 6. CHECK_DAY check - Friday (4) , Saturday (5),  Sunday (6)
+                if (config.CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(nextday.strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(nextday.strftime('%Y-%m-%d'),site_name[i]) :
                     # print(current_playseq+n , nextday.strftime('%Y-%m-%d'),DAY_OF_WEEK[dw])
                     # 7. empty site check & noti telegram & db save
                     checkEnd = checkSite(site_check_url[i],current_playseq+n,site_name[i],nextday.strftime('%Y-%m-%d'),DAY_OF_WEEK[dw])
