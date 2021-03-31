@@ -130,3 +130,6 @@ dmypy.json
 
 # config
 common/config.py
+
+# db
+db/camping.db
