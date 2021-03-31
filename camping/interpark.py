@@ -70,7 +70,7 @@ class Interpark():
                 dw = nextday.weekday()
                 # print(current_playseq+n , nextday.strftime('%Y-%m-%d'),DAY_OF_WEEK[dw])
                 # 6. INTERPARK_SITE_CHECK_DAY check - Friday (4) , Saturday (5),  Sunday (6)
-                if config.INTERPARK_SITE_CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(nextday.strftime('%Y-%m-%d')) > -1 :
+                if (config.INTERPARK_SITE_CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(nextday.strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(nextday.strftime('%Y-%m-%d'),site_name[i]) :
                     # print(current_playseq+n , nextday.strftime('%Y-%m-%d'),DAY_OF_WEEK[dw])
                     # 7. empty site check & noti telegram & db save
                     checkEnd = checkSite(site_check_url[i],current_playseq+n,site_name[i],nextday.strftime('%Y-%m-%d'),DAY_OF_WEEK[dw])
@@ -78,7 +78,6 @@ class Interpark():
                         break
 
         logger.warning('Interpark check ...')
-
 
 def checkSite(url,playseq,site_name,day_name,day_of_week):
     try:
@@ -93,7 +92,7 @@ def checkSite(url,playseq,site_name,day_name,day_of_week):
         if len(remainSeat):
             # print(site_name,day_name,day_of_week,remainSeat[0]['remainCnt'])
             # 7. empty site check & noti telegram & db save
-            if remainSeat[0]['remainCnt'] == 0:
+            if remainSeat[0]['remainCnt'] > 0:
                 sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
                 sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(remainSeat[0]['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
                 comm.executeDB(sqlText)
@@ -104,6 +103,24 @@ def checkSite(url,playseq,site_name,day_name,day_of_week):
     except Exception as e:
         logger.error(e)
         return False
+
+def notPreCheckAndExceptionCheck(day_name,site_name):
+    # aleady push send and db save check
+    sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'"'
+    df = comm.searchDB(sqlText)
+    # print(day_name,site_name,len(df))
+    if df is not None:
+        if len(df):
+            return False
+
+    #천왕산가족캠핑장 매월 10일 오전 10:00 ~ 10:30은 skip
+    if site_name == '천왕산가족캠핑장':
+        if "31" == datetime.datetime.now().strftime('%d'):
+            # print(datetime.datetime.now().strftime('%H%M'))
+            if 1000<= int(datetime.datetime.now().strftime('%H%M')) <=1030:
+                return False
+
+    return True
                     
 
 

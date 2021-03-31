@@ -19,6 +19,7 @@ import logging
 import logging.config
 from os import path
 
+from common import config
 from camping import interpark
 
 ##################################################
@@ -44,10 +45,10 @@ def main_process():
 if __name__ == '__main__':
     main_process()
     
-    #scheduler = BlockingScheduler()
-    #scheduler.add_job(main_process, 'interval', seconds=config.INTERVAL_SECONDS)
+    scheduler = BlockingScheduler()
+    scheduler.add_job(main_process, 'interval', seconds=config.INTERVAL_SECONDS)
     
-    #try:
-    #    scheduler.start()
-    #except Exception as err:
-    #    logger.error(' main Exception : %s' % e)      
+    try:
+       scheduler.start()
+    except Exception as err:
+       logger.error(' main Exception : %s' % e)      
