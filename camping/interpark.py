@@ -10,6 +10,7 @@
 
 import datetime            
 from dateutil.parser import parse
+import json
 import logging
 import logging.config
 from os import path
@@ -32,6 +33,8 @@ logging.config.fileConfig(log_file_path)
 
 # create logger
 logger = logging.getLogger('camping-reservation')
+
+comm = common.Common()
 
 ##################################################
 
@@ -70,16 +73,37 @@ class Interpark():
                 if config.INTERPARK_SITE_CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(nextday.strftime('%Y-%m-%d')) > -1 :
                     # print(current_playseq+n , nextday.strftime('%Y-%m-%d'),DAY_OF_WEEK[dw])
                     # 7. empty site check & noti telegram & db save
-                    checkEnd = checkSite(site_check_url[i],current_playseq+n,site_name[i],nextday.strftime('%Y-%m-%d'))
+                    checkEnd = checkSite(site_check_url[i],current_playseq+n,site_name[i],nextday.strftime('%Y-%m-%d'),DAY_OF_WEEK[dw])
                     if checkEnd :
                         break
 
+        logger.warning('Interpark check ...')
 
-def checkSite(url,playseq,site_name,day_name):
-    # print(url,playseq,site_name,day_name)
 
-    
-    return False
+def checkSite(url,playseq,site_name,day_name,day_of_week):
+    try:
+        # print(url,playseq,site_name,day_name)
+        url = url.replace("#PLAYSEQ#",str(playseq))
+        # print(url)
+        jsonText = comm.getCrawling(url)
+        # print(jsonText)
+        jsonObj = json.loads(jsonText)
+        data = jsonObj['data']
+        remainSeat = data['remainSeat']
+        if len(remainSeat):
+            # print(site_name,day_name,day_of_week,remainSeat[0]['remainCnt'])
+            # 7. empty site check & noti telegram & db save
+            if remainSeat[0]['remainCnt'] == 0:
+                sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
+                sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(remainSeat[0]['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
+                comm.executeDB(sqlText)
+                comm.send_telegram_msg(site_name+" : "+day_name+" : "+day_of_week+" : "+str(remainSeat[0]['remainCnt']))
+            return False
+        else:
+            return True
+    except Exception as e:
+        logger.error(e)
+        return False
                     
 
 

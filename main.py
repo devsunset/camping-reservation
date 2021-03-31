@@ -42,9 +42,11 @@ def main_process():
 #################################################
 # main
 if __name__ == '__main__':
+    main_process()
+    
     #scheduler = BlockingScheduler()
     #scheduler.add_job(main_process, 'interval', seconds=config.INTERVAL_SECONDS)
-    main_process()
+    
     #try:
     #    scheduler.start()
     #except Exception as err:
