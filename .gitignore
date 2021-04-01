@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 # config
-common/config.py
+# common/config.py
 
 # db
 db/camping.db
