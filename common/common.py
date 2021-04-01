@@ -126,11 +126,13 @@ class Common():
             bot.deleteWebhook()
             try:
                 chat_id = bot.getUpdates()[-1].message.chat.id
+                print(bot.getUpdates())
             except Exception as e:
                 chat_id = config.TELEGRAM_CHAT_ID
 
             # bot sendMessage
-            bot.sendMessage(chat_id=chat_id, text=msg)
+            bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID, text=msg)
+            bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID_SUB, text=msg)
         except Exception as e:
             logger.error(' send_telegram_msg Exception : %s' % e)
 

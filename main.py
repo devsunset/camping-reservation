@@ -22,6 +22,7 @@ from os import path
 from common import config
 from camping import interpark
 from camping import gwangmyeong
+from common import common
 
 ##################################################
 # constant
@@ -59,3 +60,5 @@ if __name__ == '__main__':
        scheduler.start()
     except Exception as err:
        logger.error(' main Exception : %s' % e)      
+
+   
