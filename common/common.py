@@ -21,6 +21,7 @@ import sqlite3
 import sys
 import telegram
 import unicodedata
+import urllib3
 
 from common import config
 # import config
@@ -151,6 +152,23 @@ class Common():
             logger.error(' getCrawling Exception : %s' % e)
         return html
 
+    # sert crawling
+    def getSertCrawling(self, url, cookies=None):
+        html = ""
+        try:
+            requests.packages.urllib3.disable_warnings()
+            requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
+            requests.packages.urllib3.contrib.pyopenssl.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
+        except AttributeError:
+            # no pyopenssl support used / needed / available
+            pass
+
+        try:
+            resp = requests.get(url, cookies=cookies,verify=False)
+            html = resp.text
+        except Exception as e:
+            logger.error(' getHttpsCrawling Exception : %s' % e)
+        return html
 
 ##################################################
 # main

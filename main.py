@@ -21,6 +21,7 @@ from os import path
 
 from common import config
 from camping import interpark
+from camping import gwangmyeong
 
 ##################################################
 # constant
@@ -33,13 +34,19 @@ logging.config.fileConfig(log_file_path)
 logger = logging.getLogger('camping-reservation')
 
 interpark = interpark.Interpark()
+gwangmyeong = gwangmyeong.Gwangmyeong()
 
 ##################################################
 
 # main process
 def main_process():   
-  interpark.emptySiteCheck()
+# 도덕산캠핑장
+  if config.GWANGMYEONG_SITE_SESSION_VALID:
+     gwangmyeong.emptySiteCheck()
 
+# 천왕산가족캠핑장
+  interpark.emptySiteCheck()
+  
 #################################################
 # main
 if __name__ == '__main__':
