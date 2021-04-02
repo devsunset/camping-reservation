@@ -51,6 +51,7 @@ def main_process():
 #################################################
 # main
 if __name__ == '__main__':
+   # common.Common().send_telegram_msg("Are you receive telegram message ?")
     main_process()
     
     scheduler = BlockingScheduler()

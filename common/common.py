@@ -123,16 +123,16 @@ class Common():
     # telegram message send
     def send_telegram_msg(self, msg):
         try:
-            bot.deleteWebhook()
-            try:
-                chat_id = bot.getUpdates()[-1].message.chat.id
-                print(bot.getUpdates())
-            except Exception as e:
-                chat_id = config.TELEGRAM_CHAT_ID
-
+            # bot.deleteWebhook()
+            # try:
+            #     chat_id = bot.getUpdates()[-1].message.chat.id                
+            # except Exception as e:
+            #     chat_id = config.TELEGRAM_CHAT_ID
             # bot sendMessage
             bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID, text=msg)
-            bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID_SUB, text=msg)
+            logger.warn(msg)
+            # bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID_1, text=msg)
+            # bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID_2, text=msg)
         except Exception as e:
             logger.error(' send_telegram_msg Exception : %s' % e)
 

@@ -89,6 +89,8 @@ def checkSite(url,playseq,site_name,day_name,day_of_week):
         jsonObj = json.loads(jsonText)
         data = jsonObj['data']
         remainSeat = data['remainSeat']
+
+        #천왕산가족캠핑장
         if len(remainSeat):
             # print(site_name,day_name,day_of_week,remainSeat[0]['remainCnt'])
             # 7. empty site check & noti telegram & db save
@@ -100,12 +102,14 @@ def checkSite(url,playseq,site_name,day_name,day_of_week):
             return False
         else:
             return True
+
     except Exception as e:
         logger.error(e)
         return False
 
 def notPreCheckAndExceptionCheck(day_name,site_name):
     # aleady push send and db save check
+    #천왕산가족캠핑장
     sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'"'
     df = comm.searchDB(sqlText)
     # print(day_name,site_name,len(df))
@@ -113,15 +117,10 @@ def notPreCheckAndExceptionCheck(day_name,site_name):
         if len(df):
             return False
 
-    #천왕산가족캠핑장 매월 10일 오전 10:00 ~ 10:30은 skip
-    if site_name == '천왕산가족캠핑장':
-        if "31" == datetime.datetime.now().strftime('%d'):
-            # print(datetime.datetime.now().strftime('%H%M'))
-            if 1000<= int(datetime.datetime.now().strftime('%H%M')) <=1030:
-                return False
+    #천왕산가족캠핑장 매월 10일 AM 10:00 ~ 10:30 skip
+    if "31" == datetime.datetime.now().strftime('%d'):
+        # print(datetime.datetime.now().strftime('%H%M'))
+        if 1000<= int(datetime.datetime.now().strftime('%H%M')) <=1030:
+            return False
 
     return True
-                    
-
-
-                
