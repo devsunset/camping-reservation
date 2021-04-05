@@ -20,7 +20,7 @@ TELEGRAM_CHAT_ID =-1001273432952
 # TELEGRAM_CHAT_ID_2 = 1669531085
 
 # day_of_week and holyday
-CHECK_DAY='1456' # Friday (4) , Saturday (5),  Sunday (6)
+CHECK_DAY='456' # Friday (4) , Saturday (5),  Sunday (6)
 HOLYDAY='2021-05-05,2021-05-19,2021-06-06,2021-08-15,2021-09-20,2021-09-21,2021-09-22,2021-10-03,2021-10-09,2021-12-25'
 
 # site  interpark (seperate comma)
