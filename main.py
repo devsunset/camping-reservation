@@ -42,8 +42,8 @@ gwangmyeong = gwangmyeong.Gwangmyeong()
 # main process
 def main_process():   
 # 도덕산캠핑장
-  if config.GWANGMYEONG_SITE_SESSION_VALID:
-     gwangmyeong.emptySiteCheck()
+if config.GWANGMYEONG_SITE_SESSION_VALID:
+    gwangmyeong.emptySiteCheck()
 
 # 천왕산가족캠핑장
   interpark.emptySiteCheck()
@@ -51,7 +51,6 @@ def main_process():
 #################################################
 # main
 if __name__ == '__main__':
-   # common.Common().send_telegram_msg("Are you receive telegram message ?")
     main_process()
     
     scheduler = BlockingScheduler()

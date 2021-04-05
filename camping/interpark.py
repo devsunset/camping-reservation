@@ -8,6 +8,7 @@
 ##################################################
 # import
 
+import calendar
 import datetime            
 from dateutil.parser import parse
 import json
@@ -41,39 +42,56 @@ comm = common.Common()
 class Interpark():
     def emptySiteCheck(self):
         site_name = config.INTERPARK_SITE_NAME.split(',')        
-        site_check_url = config.INTERPARK_SITE_CHECK_URL.split(',')
-        site_playseq = config.INTERPARK_SITE_PLAYSEQ.split(',')
-        site_playseq_date = config.INTERPARK_SITE_PLAYSEQ_DATE.split(',')
-        
-        for i in range(len(site_name)):            
-            # 1. get now date.            
-            nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
+        site_code = config.INTERPARK_SITE_CODE.split(',')        
+
+        site_check_url = config.INTERPARK_SITE_CHECK_URL
+        site_calendar = config.INTERPARK_SITE_CALENDAR        
+
+        thisMonth_startDate  = datetime.datetime.now().strftime('%Y%m')+"01"
+        thisMonth_endDate  = datetime.datetime.now().strftime('%Y%m')+str(calendar.monthrange(int(datetime.datetime.now().strftime('%Y')),int(datetime.datetime.now().strftime('%m')))[1])
+        dt = datetime.datetime(int(datetime.datetime.now().strftime('%Y')), int(datetime.datetime.now().strftime('%m')), 1)
+        nextMonth_startDate = ((dt.replace(day=1) + datetime.timedelta(days=32)).replace(day=1)).strftime('%Y%m%d')
+        nextMonth_endDate = nextMonth_startDate[0:6]+str(calendar.monthrange(int(nextMonth_startDate[0:4]),int(nextMonth_startDate[4:6]))[1])
+
+        for i in range(len(site_name)):
+            check_url = site_check_url.replace('#INTERPARK_SITE_CODE#',site_code[i])
+            cal_url_thisMonth = site_calendar.replace('#INTERPARK_SITE_CODE#',site_code[i]).replace('#START_DATE#',thisMonth_startDate).replace("#END_DATE#",thisMonth_endDate)
+            cal_url_nextMonth = site_calendar.replace('#INTERPARK_SITE_CODE#',site_code[i]).replace('#START_DATE#',nextMonth_startDate).replace("#END_DATE#",nextMonth_endDate)
+
+            playInfo = []
+
+            jsonThisMonthText = comm.getCrawling(cal_url_thisMonth)
+            jsonThisMonthObj = json.loads(jsonThisMonthText)
+            dataThisMonth = jsonThisMonthObj['data']
+
+            if len(dataThisMonth):
+                for x in dataThisMonth:
+                    playInfo.append( {'playSeq':x['playSeq'], 'playDate':x['playDate']})
+
+            jsonNextMonthText = comm.getCrawling(cal_url_nextMonth)
+            jsonNextMonthObj = json.loads(jsonNextMonthText)
+            dataNextMonth = jsonNextMonthObj['data']
+           
+            if len(dataNextMonth):
+                for x in dataNextMonth:
+                    playInfo.append( {'playSeq':x['playSeq'], 'playDate':x['playDate']})
+
+            nowTime = datetime.datetime.now().strftime('%Y%m%d')
             nowDate = parse(nowTime)
-            # print(nowDate.date())
 
-            # 2. playseq_date convert to date.
-            playseq_date = parse(site_playseq_date[i])
-            # print(playseq_date.date())
+            if len(playInfo):
+                if '천왕산가족캠핑장' == site_name[i]:
+                    playInfo.insert(0,{'playSeq':int(playInfo[0]['playSeq'])-1,'playDate':nowTime})
 
-            # 3. now date - playseq_date  - get diff day
-            date_diff = nowDate.date() - playseq_date.date()
-            # print(date_diff.days)
+            for p in playInfo:
+                # print(p['playSeq'],p['playDate'])
+                playseq_date = parse(p['playDate'])
+                dw = playseq_date.weekday()
+                date_diff = playseq_date.date() - nowDate.date()
 
-            # 4. get current playseq
-            current_playseq = int(site_playseq[i]) + date_diff.days
-            # print(playseq)
-
-            # 5. next day check 
-            current =  datetime.datetime.now()
-            for  n in range (0,62):
-                nextday = current  + datetime.timedelta(days=n)             
-                dw = nextday.weekday()
-                # print(current_playseq+n , nextday.strftime('%Y-%m-%d'),DAY_OF_WEEK[dw])
-                # 6. CHECK_DAY check - Friday (4) , Saturday (5),  Sunday (6)
-                if (config.CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(nextday.strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(nextday.strftime('%Y-%m-%d'),site_name[i]) :
-                    # print(current_playseq+n , nextday.strftime('%Y-%m-%d'),DAY_OF_WEEK[dw])
-                    # 7. empty site check & noti telegram & db save
-                    checkEnd = checkSite(site_check_url[i],current_playseq+n,site_name[i],nextday.strftime('%Y-%m-%d'),DAY_OF_WEEK[dw])
+                if date_diff.days > -1 and (config.CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(playseq_date.date().strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(playseq_date.date().strftime('%Y-%m-%d'),site_name[i]) :
+                    # empty site check & noti telegram & db save
+                    checkEnd = checkSite(check_url,p['playSeq'],site_name[i],playseq_date.date().strftime('%Y-%m-%d'),DAY_OF_WEEK[dw])
                     if checkEnd :
                         break
 
@@ -91,18 +109,38 @@ def checkSite(url,playseq,site_name,day_name,day_of_week):
         remainSeat = data['remainSeat']
 
         #천왕산가족캠핑장
-        if len(remainSeat):
-            # print(site_name,day_name,day_of_week,remainSeat[0]['remainCnt'])
-            # 7. empty site check & noti telegram & db save
-            if remainSeat[0]['remainCnt'] > 0:
-                sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
-                sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(remainSeat[0]['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
-                comm.executeDB(sqlText)
-                comm.send_telegram_msg(site_name+" : "+day_name+" : "+day_of_week+" : "+str(remainSeat[0]['remainCnt']))
-            return False
-        else:
-            return True
+        if '천왕산가족캠핑장' == site_name:
+            if len(remainSeat):
+                #  empty site check & noti telegram & db save
+                if remainSeat[0]['remainCnt'] > 0:
+                    sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
+                    sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(remainSeat[0]['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
+                    comm.executeDB(sqlText)
+                    comm.send_telegram_msg(site_name+" : "+day_name+" : "+day_of_week+" : "+str(remainSeat[0]['remainCnt']))
+                return False
+            else:
+                return True
 
+        #수도권매립지캠핑장
+        if '수도권매립지캠핑장' == site_name:
+            if len(remainSeat):
+                #  empty site check & noti telegram & db save
+                for r in remainSeat:
+                    if r['seatGradeName'] == '오토캠핑장(데크)' and r['remainCnt'] > 0:
+                        sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
+                        sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(r['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
+                        comm.executeDB(sqlText)
+                        comm.send_telegram_msg(site_name+" : "+day_name+":오토캠핑장(데크) : "+day_of_week+" : "+str(r['remainCnt']))
+
+                    if r['seatGradeName'] == '오토캠핑장(파쇄석)' and r['remainCnt'] > 0:
+                        sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
+                        sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(r['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
+                        comm.executeDB(sqlText)
+                        comm.send_telegram_msg(site_name+" : "+day_name+":오토캠핑장(파쇄석)  : "+day_of_week+" : "+str(r['remainCnt']))
+
+                return False
+            else:
+                return True
     except Exception as e:
         logger.error(e)
         return False
@@ -117,10 +155,16 @@ def notPreCheckAndExceptionCheck(day_name,site_name):
         if len(df):
             return False
 
-    #천왕산가족캠핑장 매월 10일 AM 10:00 ~ 10:30 skip
-    if "31" == datetime.datetime.now().strftime('%d'):
-        # print(datetime.datetime.now().strftime('%H%M'))
-        if 1000<= int(datetime.datetime.now().strftime('%H%M')) <=1030:
-            return False
+    if '천왕산가족캠핑장' == site_name:
+        #천왕산가족캠핑장 매월 10일 AM 10:00 ~ 10:30 skip
+        if "10" == datetime.datetime.now().strftime('%d'):
+            if 1000<= int(datetime.datetime.now().strftime('%H%M')) <=1030:
+                return False
+
+    if '수도권매립지캠핑장' == site_name:
+        #천왕산가족캠핑장 매월 10일 AM 10:00 ~ 10:30 skip
+        if "15" == datetime.datetime.now().strftime('%d'):
+            if 1400<= int(datetime.datetime.now().strftime('%H%M')) <=1430:
+                return False
 
     return True
