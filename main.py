@@ -42,8 +42,8 @@ gwangmyeong = gwangmyeong.Gwangmyeong()
 # main process
 def main_process():   
 # 도덕산캠핑장
-if config.GWANGMYEONG_SITE_SESSION_VALID:
-    gwangmyeong.emptySiteCheck()
+  if config.GWANGMYEONG_SITE_SESSION_VALID:
+      gwangmyeong.emptySiteCheck()
 
 # 천왕산가족캠핑장
   interpark.emptySiteCheck()
