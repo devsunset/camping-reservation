@@ -43,6 +43,7 @@ class Interpark():
     def emptySiteCheck(self):
         site_name = config.INTERPARK_SITE_NAME.split(',')        
         site_code = config.INTERPARK_SITE_CODE.split(',')        
+        site_check_day = config.INTERPARK_SITE_CHECK_DAY.split(',')   
 
         site_check_url = config.INTERPARK_SITE_CHECK_URL
         site_calendar = config.INTERPARK_SITE_CALENDAR        
@@ -89,7 +90,7 @@ class Interpark():
                 dw = playseq_date.weekday()
                 date_diff = playseq_date.date() - nowDate.date()
 
-                if date_diff.days > -1 and (config.CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(playseq_date.date().strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(playseq_date.date().strftime('%Y-%m-%d'),site_name[i]) :
+                if date_diff.days > -1 and (site_check_day[i].find(str(dw)) > -1 or config.HOLYDAY.find(playseq_date.date().strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(playseq_date.date().strftime('%Y-%m-%d'),site_name[i]) :
                     # empty site check & noti telegram & db save
                     checkEnd = checkSite(check_url,p['playSeq'],site_name[i],playseq_date.date().strftime('%Y-%m-%d'),DAY_OF_WEEK[dw])
                     if checkEnd :

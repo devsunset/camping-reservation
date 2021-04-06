@@ -84,9 +84,9 @@ class Gwangmyeong():
                     # print(date_diff.days)
 
                     dw = reservation_date.weekday()
-                    # Future day check  AND CHECK_DAY check - Friday (4) , Saturday (5),  Sunday (6) AND HOLYDAY Check
+                    # Future day check  AND GWANGMYEONG_SITE_CHECK_DAY check - Friday (4) , Saturday (5) AND HOLYDAY Check
                     
-                    if date_diff.days > 0 and (config.CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(reservation_date.strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(reservation_date.strftime('%Y-%m-%d')+":"+date_info[3].replace("'","" ),site_name) :
+                    if date_diff.days > 0 and (config.GWANGMYEONG_SITE_CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(reservation_date.strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(reservation_date.strftime('%Y-%m-%d')+":"+date_info[3].replace("'","" ),site_name) :
                         # 5. empty site check & noti telegram & db save
                         if txt.find('잔여 데크: 0') == -1:
                              checkSite(site_name,reservation_date.strftime('%Y-%m-%d')+":"+date_info[3].replace("'","" ),DAY_OF_WEEK[dw],(txt[txt.find('잔여 데크:') +6:len(txt)-4]).replace(" ",""))
