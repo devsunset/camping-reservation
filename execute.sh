@@ -1,2 +1,2 @@
-python3 main.py > app.log &
+python3 camping_reservation.py > app.log &
 
