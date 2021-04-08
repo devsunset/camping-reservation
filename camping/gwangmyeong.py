@@ -62,8 +62,13 @@ class Gwangmyeong():
         # 3. session invalid check
         if html.find('LOGIN_FAIL_CNT') > -1:
             logger.error('jessionid is invalid')
+            config.GWANGMYEONG_SITE_SESSION_VALID =  config.GWANGMYEONG_SITE_SESSION_VALID + 1
             comm.send_telegram_msg(site_name+" :  session invalid.")
-            config.GWANGMYEONG_SITE_SESSION_VALID = False
+            
+            if config.GWANGMYEONG_SITE_SESSION_KEY.find('worker1') > -1:
+                config.GWANGMYEONG_SITE_SESSION_KEY = config.GWANGMYEONG_SITE_SESSION_KEY.replace('worker1','worker2')
+            else:
+                config.GWANGMYEONG_SITE_SESSION_KEY = config.GWANGMYEONG_SITE_SESSION_KEY.replace('worker2','worker1')
         else:
         # 4. html parse - get site reservation  info
             bs = bs4.BeautifulSoup(html, 'html.parser')
@@ -90,6 +95,10 @@ class Gwangmyeong():
                         # 5. empty site check & noti telegram & db save
                         if txt.find('잔여 데크: 0') == -1:
                              checkSite(site_name,reservation_date.strftime('%Y-%m-%d')+":"+date_info[3].replace("'","" ),DAY_OF_WEEK[dw],(txt[txt.find('잔여 데크:') +6:len(txt)-4]).replace(" ",""))
+
+            if config.GWANGMYEONG_SITE_SESSION_VALID  == 1 :
+                config.GWANGMYEONG_SITE_SESSION_VALID = 0
+                comm.send_telegram_msg(site_name+" :  session valid.")
 
         logger.warning('Gwangmyeong check ...')
         
