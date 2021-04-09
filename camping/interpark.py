@@ -142,6 +142,22 @@ def checkSite(url,playseq,site_name,day_name,day_of_week):
                 return False
             else:
                 return True
+
+        #공릉관광지가족캠핑장
+        if '공릉관광지가족캠핑장' == site_name:
+            print(remainSeat)
+            if len(remainSeat):
+                #  empty site check & noti telegram & db save
+                for r in remainSeat:
+                    if r['seatGradeName'] == '캠핑' and r['remainCnt'] > 0:
+                        sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
+                        sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(r['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
+                        comm.executeDB(sqlText)
+                        comm.send_telegram_msg(site_name+" : "+day_name+" : "+day_of_week+" : "+str(r['remainCnt']))
+
+                return False
+            else:
+                return True
     except Exception as e:
         logger.error(e)
         return False
@@ -163,9 +179,15 @@ def notPreCheckAndExceptionCheck(day_name,site_name):
                 return False
 
     if '수도권매립지캠핑장' == site_name:
-        #천왕산가족캠핑장 매월 10일 AM 10:00 ~ 10:30 skip
+        #수도권매립지캠핑장 매월 15일 AM 10:00 ~ 10:30 skip
         if "15" == datetime.datetime.now().strftime('%d'):
             if 1400<= int(datetime.datetime.now().strftime('%H%M')) <=1430:
+                return False
+
+    if '공릉관광지가족캠핑장' == site_name:
+        #공릉관광지가족캠핑장 매월 15일 AM 11:00 ~ 11:30 skip
+        if "15" == datetime.datetime.now().strftime('%d'):
+            if 1100<= int(datetime.datetime.now().strftime('%H%M')) <=1130:
                 return False
 
     return True

@@ -45,7 +45,7 @@ def main_process():
   if config.GWANGMYEONG_SITE_SESSION_VALID < 2:
       gwangmyeong.emptySiteCheck()
 
-# 천왕산가족캠핑장
+# 천왕산가족캠핑장,수도권매립지캠핑장,공릉관광지가족캠핑장
   interpark.emptySiteCheck()
   
 #################################################
