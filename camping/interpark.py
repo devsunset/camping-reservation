@@ -44,6 +44,8 @@ class Interpark():
         site_name = config.INTERPARK_SITE_NAME.split(',')        
         site_code = config.INTERPARK_SITE_CODE.split(',')        
         site_check_day = config.INTERPARK_SITE_CHECK_DAY.split(',')   
+        site_not_chech_day_time = config.INTERPARK_SITE_NOT_CHECK_DAY_TIME.split(',')
+        seatGrade= config.INTERPARK_SITE_SEAT_GRADE.split(',')
 
         site_check_url = config.INTERPARK_SITE_CHECK_URL
         site_calendar = config.INTERPARK_SITE_CALENDAR        
@@ -90,15 +92,15 @@ class Interpark():
                 dw = playseq_date.weekday()
                 date_diff = playseq_date.date() - nowDate.date()
 
-                if date_diff.days > -1 and (site_check_day[i].find(str(dw)) > -1 or config.HOLYDAY.find(playseq_date.date().strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(playseq_date.date().strftime('%Y-%m-%d'),site_name[i]) :
+                if date_diff.days > -1 and (site_check_day[i].find(str(dw)) > -1 or config.HOLYDAY.find(playseq_date.date().strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(playseq_date.date().strftime('%Y-%m-%d'),site_name[i],site_not_chech_day_time[i]) :
                     # empty site check & noti telegram & db save
-                    checkEnd = checkSite(check_url,p['playSeq'],site_name[i],playseq_date.date().strftime('%Y-%m-%d'),DAY_OF_WEEK[dw])
+                    checkEnd = checkSite(check_url,p['playSeq'],site_name[i],playseq_date.date().strftime('%Y-%m-%d'),DAY_OF_WEEK[dw],seatGrade[i])
                     if checkEnd :
                         break
 
         logger.warning('Interpark check ...')
 
-def checkSite(url,playseq,site_name,day_name,day_of_week):
+def checkSite(url,playseq,site_name,day_name,day_of_week,seatGrades):
     try:
         # print(url,playseq,site_name,day_name)
         url = url.replace("#PLAYSEQ#",str(playseq))
@@ -108,85 +110,40 @@ def checkSite(url,playseq,site_name,day_name,day_of_week):
         jsonObj = json.loads(jsonText)
         data = jsonObj['data']
         remainSeat = data['remainSeat']
-
-        #천왕산가족캠핑장
-        if '천왕산가족캠핑장' == site_name:
-            if len(remainSeat):
-                #  empty site check & noti telegram & db save
-                if remainSeat[0]['remainCnt'] > 0:
+        if len(remainSeat):
+            #  empty site check & noti telegram & db save
+            for r in remainSeat:
+                if checkExist(r['seatGrade'], seatGrades)  and r['remainCnt'] > 0:
                     sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
-                    sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(remainSeat[0]['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
+                    sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(r['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
                     comm.executeDB(sqlText)
-                    comm.send_telegram_msg(site_name+" : "+day_name+" : "+day_of_week+" : "+str(remainSeat[0]['remainCnt']))
-                return False
-            else:
-                return True
-
-        #수도권매립지캠핑장
-        if '수도권매립지캠핑장' == site_name:
-            if len(remainSeat):
-                #  empty site check & noti telegram & db save
-                for r in remainSeat:
-                    if r['seatGradeName'] == '오토캠핑장(데크)' and r['remainCnt'] > 0:
-                        sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
-                        sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(r['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
-                        comm.executeDB(sqlText)
-                        comm.send_telegram_msg(site_name+" : "+day_name+":오토캠핑장(데크) : "+day_of_week+" : "+str(r['remainCnt']))
-
-                    if r['seatGradeName'] == '오토캠핑장(파쇄석)' and r['remainCnt'] > 0:
-                        sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
-                        sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(r['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
-                        comm.executeDB(sqlText)
-                        comm.send_telegram_msg(site_name+" : "+day_name+":오토캠핑장(파쇄석)  : "+day_of_week+" : "+str(r['remainCnt']))
-
-                return False
-            else:
-                return True
-
-        #공릉관광지가족캠핑장
-        if '공릉관광지가족캠핑장' == site_name:
-            if len(remainSeat):
-                #  empty site check & noti telegram & db save
-                for r in remainSeat:
-                    if r['seatGradeName'] == '캠핑' and r['remainCnt'] > 0:
-                        sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
-                        sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(r['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
-                        comm.executeDB(sqlText)
-                        comm.send_telegram_msg(site_name+" : "+day_name+" : "+day_of_week+" : "+str(r['remainCnt']))
-
-                return False
-            else:
-                return True
+                    comm.send_telegram_msg(site_name+" : "+day_name+":"+r['seatGradeName'] +" : "+day_of_week+" : "+str(r['remainCnt']))
+            return False
+        else:
+            return True
     except Exception as e:
         logger.error(e)
         return False
 
-def notPreCheckAndExceptionCheck(day_name,site_name):
+def checkExist(seatGrade, seatGrades):
+    seatGrades = seatGrades.split(':')
+    for x in seatGrades:        
+        if seatGrade == x:   
+            return True
+    return False
+
+def notPreCheckAndExceptionCheck(day_name,site_name,site_not_check_day_time):
     # aleady push send and db save check
-    #천왕산가족캠핑장
-    sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'"'
+    sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-10 minutes"'")'
     df = comm.searchDB(sqlText)
-    # print(day_name,site_name,len(df))
     if df is not None:
         if len(df):
             return False
 
-    if '천왕산가족캠핑장' == site_name:
-        #천왕산가족캠핑장 매월 10일 AM 10:00 ~ 10:30 skip
-        if "10" == datetime.datetime.now().strftime('%d'):
-            if 1000<= int(datetime.datetime.now().strftime('%H%M')) <=1030:
-                return False
-
-    if '수도권매립지캠핑장' == site_name:
-        #수도권매립지캠핑장 매월 15일 AM 10:00 ~ 10:30 skip
-        if "15" == datetime.datetime.now().strftime('%d'):
-            if 1400<= int(datetime.datetime.now().strftime('%H%M')) <=1430:
-                return False
-
-    if '공릉관광지가족캠핑장' == site_name:
-        #공릉관광지가족캠핑장 매월 15일 AM 11:00 ~ 11:30 skip
-        if "15" == datetime.datetime.now().strftime('%d'):
-            if 1100<= int(datetime.datetime.now().strftime('%H%M')) <=1130:
-                return False
+    day_time = site_not_check_day_time.split(':')
+     
+    if day_time[0] == datetime.datetime.now().strftime('%d'):
+        if int(day_time[1]+'00')<= int(datetime.datetime.now().strftime('%H%M')) <=int(day_time[1]+'05'):
+            return False
 
     return True
