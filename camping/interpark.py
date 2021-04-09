@@ -145,7 +145,6 @@ def checkSite(url,playseq,site_name,day_name,day_of_week):
 
         #공릉관광지가족캠핑장
         if '공릉관광지가족캠핑장' == site_name:
-            print(remainSeat)
             if len(remainSeat):
                 #  empty site check & noti telegram & db save
                 for r in remainSeat:
