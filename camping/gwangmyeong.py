@@ -113,7 +113,11 @@ def checkSite(site_name,day_name,day_of_week,remain_cnt):
 
 def notPreCheckAndExceptionCheck(day_name,site_name):
     # aleady push send and db save check
-    sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'"'
+    if int('0000')<= int(datetime.datetime.now().strftime('%H%M')) <=int('0700'):
+        sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-300 minutes"'")'
+    else:
+        sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-30 minutes"'")'
+        
     df = comm.searchDB(sqlText)
     # print(day_name,site_name,len(df))
     if df is not None:
