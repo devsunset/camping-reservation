@@ -129,7 +129,7 @@ class Common():
             # except Exception as e:
             #     chat_id = config.TELEGRAM_CHAT_ID
             # bot sendMessage
-            # bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID, text=msg)
+            bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID, text=msg)
             logger.warn(msg)
         except Exception as e:
             logger.error(' send_telegram_msg Exception : %s' % e)
