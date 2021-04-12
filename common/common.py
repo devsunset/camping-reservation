@@ -59,12 +59,13 @@ class Common():
             if sqlParam == None:
                 cur.execute(sql)
             else:
+              if str(type(sqlParam)) == "<class 'tuple'>":                    
                 cur.execute(sql, sqlParam)
+              else:
+                cur.executemany(sql,sqlParam)
             columns = list(map(lambda x: x[0], cur.description))
             result = cur.fetchall()
             df = DataFrame.from_records(data=result, columns=columns)
-        except Exception as e:
-            logger.error(' searchDB Exception : %s' % e)
         finally:
           if conn is not None:
             conn.close()
@@ -79,10 +80,11 @@ class Common():
           if sqlParam == None:
               cur.execute(sql)
           else:
-              cur.execute(sql, sqlParam)
+              if str(type(sqlParam)) == "<class 'tuple'>":    
+                cur.execute(sql, sqlParam)
+              else:
+                cur.executemany(sql,sqlParam)
           conn.commit()
-        except Exception as e:
-          logger.error(' executeDB Exception : %s' % e)
         finally:
           if conn is not None:
             conn.close()
@@ -98,12 +100,13 @@ class Common():
             if sqlParam == None:
                 cur.execute(sql)
             else:
-                cur.execute(sql, sqlParam)
+                if str(type(sqlParam)) == "<class 'tuple'>":    
+                    cur.execute(sql, sqlParam)
+                else:
+                    cur.executemany(sql,sqlParam)
             columns = list(map(lambda x: x[0], cur.description))
             result = cur.fetchall()
             df = DataFrame.from_records(data=result, columns=columns)
-        except Exception as e:
-            logger.error(' searchDB Exception : %s' % e)
         return df
 
     # execute sql query - insert/update/delete
@@ -114,10 +117,10 @@ class Common():
           if sqlParam == None:
               cur.execute(sql)
           else:
-              cur.execute(sql, sqlParam)
-          conn.commit()
-        except Exception as e:
-          logger.error(' executeDB Exception : %s' % e)
+             if str(type(sqlParam)) == "<class 'tuple'>":    
+                cur.execute(sql, sqlParam)
+             else:   
+                cur.executemany(sql,sqlParam)
         return cur.lastrowid
 
     # telegram message send
@@ -131,8 +134,6 @@ class Common():
             # bot sendMessage
             bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID, text=msg)
             logger.warn(msg)
-            # bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID_1, text=msg)
-            # bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID_2, text=msg)
         except Exception as e:
             logger.error(' send_telegram_msg Exception : %s' % e)
 
