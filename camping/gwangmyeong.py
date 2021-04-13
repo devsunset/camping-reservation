@@ -91,7 +91,7 @@ class Gwangmyeong():
                     dw = reservation_date.weekday()
                     # Future day check  AND GWANGMYEONG_SITE_CHECK_DAY check - Friday (4) , Saturday (5) AND HOLYDAY Check
                     
-                    if date_diff.days > 0 and (config.GWANGMYEONG_SITE_CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(reservation_date.strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(reservation_date.strftime('%Y-%m-%d')+":"+date_info[3].replace("'","" ),site_name) :
+                    if date_diff.days > 0 and (config.GWANGMYEONG_SITE_CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(reservation_date.strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(reservation_date.strftime('%Y-%m-%d')+":"+date_info[3].replace("'","" ),site_name,DAY_OF_WEEK[dw]) :
                         # 5. empty site check & noti telegram & db save
                         if txt.find('잔여 데크: 0') == -1:
                              checkSite(site_name,reservation_date.strftime('%Y-%m-%d')+":"+date_info[3].replace("'","" ),DAY_OF_WEEK[dw],(txt[txt.find('잔여 데크:') +6:len(txt)-4]).replace(" ",""))
@@ -116,8 +116,11 @@ def notPreCheckAndExceptionCheck(day_name,site_name):
     if int('0000')<= int(datetime.datetime.now().strftime('%H%M')) <=int('0600'):
         sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(strftime("'"%Y-%m-%d 00:00:00"'", "'"now"'","'"localtime"'"))'
     else:
-        sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-30 minutes"'")'
-        
+        if DAY_OF_WEEK[dw] == "토":
+            sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-30 minutes"'")'
+        else:
+            sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-360 minutes"'")'
+
     df = comm.searchDB(sqlText)
     # print(day_name,site_name,len(df))
     if df is not None:
