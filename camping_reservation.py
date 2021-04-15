@@ -41,6 +41,11 @@ gwangmyeong = gwangmyeong.Gwangmyeong()
 
 # main process
 def main_process():   
+
+  # old data delete 
+  sqlText = 'delete from camping_meta where datetime(substr(day_name,0,11)) < datetime ("'"now"'" ,"'"localtime"'")'
+  common.Common().executeDB(sqlText)
+
 # 도덕산캠핑장
   if config.GWANGMYEONG_SITE_SESSION_VALID < 2:
       gwangmyeong.emptySiteCheck()
