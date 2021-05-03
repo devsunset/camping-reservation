@@ -104,6 +104,9 @@ class Gwangmyeong():
         
 def checkSite(site_name,day_name,day_of_week,remain_cnt):
     try:
+        sqlText = 'delete from camping_meta where day_name"'+day_name+'" and day_of_week = "'+day_of_week+'" and site_name = "'+site_name+'"'
+        comm.executeDB(sqlText)
+
         sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
         sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+remain_cnt+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
         comm.executeDB(sqlText)

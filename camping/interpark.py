@@ -114,6 +114,9 @@ def checkSite(url,playseq,site_name,day_name,day_of_week,seatGrades):
             #  empty site check & noti telegram & db save
             for r in remainSeat:
                 if checkExist(r['seatGrade'], seatGrades)  and r['remainCnt'] > 0:
+                    sqlText = 'delete from camping_meta where day_name"'+day_name+'" and day_of_week = "'+day_of_week+'" and site_name = "'+site_name+'"'
+                    comm.executeDB(sqlText)
+
                     sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
                     sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(r['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
                     comm.executeDB(sqlText)
