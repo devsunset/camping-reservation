@@ -23,10 +23,10 @@ TELEGRAM_CHAT_ID =-1001273432952
 HOLYDAY='2021-06-05,2021-08-14,2021-09-19,2021-09-20,2021-09-21,2021-10-02,2021-10-08,2021-12-24'
 
 # site  interpark (seperate comma)
-INTERPARK_SITE_NAME='천왕산가족캠핑장,수도권매립지캠핑장,공릉관광지가족캠핑장,평택소풍정원캠핑장'
-INTERPARK_SITE_CODE='20006668,20003504,20008285,20011252'
-INTERPARK_SITE_CHECK_DAY='5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
-INTERPARK_SITE_SEAT_GRADE='1,1:2,1,1:2'
+INTERPARK_SITE_NAME='천왕산가족캠핑장,수도권매립지캠핑장,공릉관광지가족캠핑장,평택소풍정원캠핑장,안산화랑오토캠핑장'
+INTERPARK_SITE_CODE='20006668,20003504,20008285,20011252,20004246'
+INTERPARK_SITE_CHECK_DAY='5,5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
+INTERPARK_SITE_SEAT_GRADE='1,1:2,1,1:2,1'
 INTERPARK_SITE_NOT_CHECK_DAY_TIME='10:10,15:14,15:11,15:10'
 INTERPARK_SITE_CHECK_URL='https://api-ticketfront.interpark.com/v1/goods/#INTERPARK_SITE_CODE#/playSeq/PlaySeq/#PLAYSEQ#/REMAINSEAT'
 INTERPARK_SITE_CALENDAR='https://api-ticketfront.interpark.com/v1/goods/#INTERPARK_SITE_CODE#/playSeq?endDate=#END_DATE#&goodsCode=#INTERPARK_SITE_CODE#&page=1&pageSize=1550&preSale=false&startDate=#START_DATE#'
