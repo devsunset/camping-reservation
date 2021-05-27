@@ -114,8 +114,8 @@ def checkSite(url,playseq,site_name,day_name,day_of_week,seatGrades):
             #  empty site check & noti telegram & db save
             for r in remainSeat:
                 if checkExist(r['seatGrade'], seatGrades)  and r['remainCnt'] > 0:
-                    sqlText = 'delete from camping_meta where day_name="'+day_name+'" and day_of_week = "'+day_of_week+'" and site_name = "'+site_name+'"'
-                    comm.executeDB(sqlText)
+                    # sqlText = 'delete from camping_meta where day_name="'+day_name+'" and day_of_week = "'+day_of_week+'" and site_name = "'+site_name+'"'
+                    # comm.executeDB(sqlText)
 
                     sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
                     sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(r['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
@@ -137,16 +137,18 @@ def checkExist(seatGrade, seatGrades):
 
 def notPreCheckAndExceptionCheck(day_name,site_name,site_not_check_day_time,day_of_week):
     # aleady push send and db save check
-    if str(day_name) == str(datetime.datetime.now().strftime('%Y-%m-%d')) :
-               sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(strftime("'"%Y-%m-%d 00:00:00"'", "'"now"'","'"localtime"'"))'
-    else:
-        if int('0000')<= int(datetime.datetime.now().strftime('%H%M')) <=int('0600'):
-            sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(strftime("'"%Y-%m-%d 00:00:00"'", "'"now"'","'"localtime"'"))'
-        else:
-            if day_of_week == "토":
-                sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-30 minutes"'")'
-            else:
-                sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-360 minutes"'")'
+    # if str(day_name) == str(datetime.datetime.now().strftime('%Y-%m-%d')) :
+    #            sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(strftime("'"%Y-%m-%d 00:00:00"'", "'"now"'","'"localtime"'"))'
+    # else:
+    #     if int('0000')<= int(datetime.datetime.now().strftime('%H%M')) <=int('0600'):
+    #         sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(strftime("'"%Y-%m-%d 00:00:00"'", "'"now"'","'"localtime"'"))'
+    #     else:
+    #         if day_of_week == "토":
+    #             sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-30 minutes"'")'
+    #         else:
+    #             sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-360 minutes"'")'
+
+    sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-5 minutes"'")'
 
     df = comm.searchDB(sqlText)
     if df is not None:
