@@ -43,6 +43,7 @@ class Epoc():
     def emptySiteCheck(self):
         site_name = config.EPOC_SITE_NAME       
         site_check_url = config.EPOC_SITE_CHECK_URL
+        site_session_key = config.EPOC_SITE_SESSION_KEY
 
         # 1. get now date.            
         nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
@@ -51,7 +52,8 @@ class Epoc():
         # 2. get site reservation info.
         # cookies = {}
      
-        html = comm.getSertCrawling(site_check_url)
+        cookies = {'JSESSIONID': site_session_key}
+        html = comm.getSertCrawling(site_check_url,cookies)
 
         # get now date.            
         nowTime = datetime.datetime.now().strftime('%Y-%m-%d')

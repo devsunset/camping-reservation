@@ -145,9 +145,8 @@ class Common():
     # crawling
     def getCrawling(self, url):
         html = ""
-        headers = {"User-Agent":  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'}
         try:
-            resp = requests.get(url,headers=headers)
+            resp = requests.get(url)
             html = resp.text
         except Exception as e:
             logger.error(' getCrawling Exception : %s' % e)
@@ -165,8 +164,7 @@ class Common():
             pass
 
         try:
-            headers = {"User-Agent":  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'}
-            resp = requests.get(url, cookies=cookies,verify=False,headers=headers)
+            resp = requests.get(url, cookies=cookies,verify=False)
             html = resp.text
         except Exception as e:
             logger.error(' getHttpsCrawling Exception : %s' % e)
