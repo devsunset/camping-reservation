@@ -55,7 +55,7 @@ def main_process():
   interpark.emptySiteCheck()
 
 # 이포보오토캠핑장
-  epoc.emptySiteCheck()
+  # epoc.emptySiteCheck()
   
 #################################################
 # main
@@ -66,6 +66,6 @@ if __name__ == '__main__':
     try:
        scheduler.start()
     except Exception as err:
-       logger.error(' main Exception : %s' % e)      
+       logger.error(' main Exception : %s' % err)      
 
    

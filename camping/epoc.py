@@ -52,7 +52,7 @@ class Epoc():
         # 2. get site reservation info.
         # cookies = {}
      
-        cookies = {'JSESSIONID': site_session_key,'SERVERID':'web-server1','SCOUTER':'z4581m1rk4h5ku','_ga':'GA1.3.1482713637.1622506723','gid':'GA1.3.135789378.1622506723'}
+        cookies = {}
         html = comm.getSertCrawling(site_check_url,cookies)
 
         # get now date.            
