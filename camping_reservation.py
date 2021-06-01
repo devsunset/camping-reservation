@@ -22,7 +22,7 @@ from os import path
 from common import config
 from camping import interpark
 from camping import gwangmyeong
-# from camping import epoc
+from camping import epoc
 from common import common
 
 ##################################################
@@ -37,35 +37,25 @@ logger = logging.getLogger('camping-reservation')
 
 interpark = interpark.Interpark()
 gwangmyeong = gwangmyeong.Gwangmyeong()
-# epoc = epoc.Epoc()
+epoc = epoc.Epoc()
 
 ##################################################
 
 # main process
 def main_process():   
-
   # old data delete 
   sqlText = 'delete from camping_meta where datetime(substr(day_name,0,11)) < datetime ("'"now"'" ,"'"localtime"'")'
   common.Common().executeDB(sqlText)
 
 # 도덕산캠핑장
-# try:
   if config.GWANGMYEONG_SITE_SESSION_VALID < 2:
       gwangmyeong.emptySiteCheck()
-# except Exception as e:
-#     logger.error(e)
 
 # 천왕산가족캠핑장,수도권매립지캠핑장,공릉관광지가족캠핑장,평택소풍정원캠핑장,안산화랑오토캠핑장,인천두리캠핑장,한탄강오토캠핑장,경기도청소년수련원캠핑장안산,평택내리캠핑장
-# try:
   interpark.emptySiteCheck()
-# except Exception as e:
-#     logger.error(e)
 
 # 이포보오토캠핑장
-# try:
-#   epoc.emptySiteCheck()
-# except Exception as e:
-#     logger.error(e)
+  epoc.emptySiteCheck()
   
 #################################################
 # main
