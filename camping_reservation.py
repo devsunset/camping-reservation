@@ -22,7 +22,7 @@ from os import path
 from common import config
 from camping import interpark
 from camping import gwangmyeong
-from camping import epoc
+# from camping import epoc
 from common import common
 
 ##################################################
@@ -37,7 +37,7 @@ logger = logging.getLogger('camping-reservation')
 
 interpark = interpark.Interpark()
 gwangmyeong = gwangmyeong.Gwangmyeong()
-epoc = epoc.Epoc()
+# epoc = epoc.Epoc()
 
 ##################################################
 
