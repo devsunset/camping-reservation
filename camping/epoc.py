@@ -44,7 +44,6 @@ class Epoc():
         site_name = config.EPOC_SITE_NAME       
         site_check_url = config.EPOC_SITE_CHECK_URL
 
-        print(site_check_url)
         # 1. get now date.            
         nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
         nowDate = parse(nowTime)
