@@ -62,10 +62,10 @@ except Exception as e:
     logger.error(e)
 
 # 이포보오토캠핑장
-try:
-  epoc.emptySiteCheck()
-except Exception as e:
-    logger.error(e)
+# try:
+#   epoc.emptySiteCheck()
+# except Exception as e:
+#     logger.error(e)
   
 #################################################
 # main
