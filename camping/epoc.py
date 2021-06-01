@@ -59,19 +59,21 @@ class Epoc():
         # 3. json parse - get site reservation  info
         jsonObject = json.loads(html)
         jsonArray = jsonObject.get("resultList")
-        for list in jsonArray:
-            # reservation date convert to date.
-            reservation_date = parse(list.get('format_sd_date'))
-            # reservation_date - now date = get diff day
-            date_diff =  reservation_date.date() - nowDate.date()
-           
-            dw = reservation_date.weekday()
-            # Future day check  AND EPOC_SITE_CHECK_DAY check - Friday (4) , Saturday (5) AND HOLYDAY Check
-                
-            if date_diff.days > 0 and (config.EPOC_SITE_CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(reservation_date.strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(reservation_date.strftime('%Y-%m-%d'),site_name,DAY_OF_WEEK[dw]) :
-                # 5. empty site check & noti telegram & db save
-                if list.get('reserve_ready_cnt') > 0:
-                        checkSite(site_name,reservation_date.strftime('%Y-%m-%d'),DAY_OF_WEEK[dw],str(list.get('reserve_ready_cnt')))
+
+        if jsonObject.get("resultList") != "-2":
+            for list in jsonArray:
+                # reservation date convert to date.
+                reservation_date = parse(list.get('format_sd_date'))
+                # reservation_date - now date = get diff day
+                date_diff =  reservation_date.date() - nowDate.date()
+            
+                dw = reservation_date.weekday()
+                # Future day check  AND EPOC_SITE_CHECK_DAY check - Friday (4) , Saturday (5) AND HOLYDAY Check
+                    
+                if date_diff.days > 0 and (config.EPOC_SITE_CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(reservation_date.strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(reservation_date.strftime('%Y-%m-%d'),site_name,DAY_OF_WEEK[dw]) :
+                    # 5. empty site check & noti telegram & db save
+                    if list.get('reserve_ready_cnt') > 0:
+                            checkSite(site_name,reservation_date.strftime('%Y-%m-%d'),DAY_OF_WEEK[dw],str(list.get('reserve_ready_cnt')))
 
         logger.warning('Epoc check ...')
         
