@@ -49,17 +49,17 @@ def main_process():
   common.Common().executeDB(sqlText)
 
 # 도덕산캠핑장
-try:
+# try:
   if config.GWANGMYEONG_SITE_SESSION_VALID < 2:
       gwangmyeong.emptySiteCheck()
-except Exception as e:
-    logger.error(e)
+# except Exception as e:
+#     logger.error(e)
 
 # 천왕산가족캠핑장,수도권매립지캠핑장,공릉관광지가족캠핑장,평택소풍정원캠핑장,안산화랑오토캠핑장,인천두리캠핑장,한탄강오토캠핑장,경기도청소년수련원캠핑장안산,평택내리캠핑장
-try:
+# try:
   interpark.emptySiteCheck()
-except Exception as e:
-    logger.error(e)
+# except Exception as e:
+#     logger.error(e)
 
 # 이포보오토캠핑장
 # try:
@@ -71,10 +71,8 @@ except Exception as e:
 # main
 if __name__ == '__main__':
     main_process()
-    
     scheduler = BlockingScheduler()
     scheduler.add_job(main_process, 'interval', seconds=config.INTERVAL_SECONDS)
-    
     try:
        scheduler.start()
     except Exception as err:
