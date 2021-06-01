@@ -49,12 +49,14 @@ class Epoc():
         nowDate = parse(nowTime)
 
         # 2. get site reservation info.
-        cookies = {}
-        html = comm.getSertCrawling(site_check_url,cookies)
+        # cookies = {}
+     
+        html = comm.getSertCrawling(site_check_url)
 
         # get now date.            
         nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
         nowDate = parse(nowTime)
+
         print(html)
         # 3. json parse - get site reservation  info
         jsonObject = json.loads(html)
@@ -74,6 +76,8 @@ class Epoc():
                     # 5. empty site check & noti telegram & db save
                     if list.get('reserve_ready_cnt') > 0:
                             checkSite(site_name,reservation_date.strftime('%Y-%m-%d'),DAY_OF_WEEK[dw],str(list.get('reserve_ready_cnt')))
+        else:
+            logger.warning('Epoc invalid site url ...')
 
         logger.warning('Epoc check ...')
         
