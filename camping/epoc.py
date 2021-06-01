@@ -55,7 +55,7 @@ class Epoc():
         # get now date.            
         nowTime = datetime.datetime.now().strftime('%Y-%m-%d')
         nowDate = parse(nowTime)
-
+        print(html)
         # 3. json parse - get site reservation  info
         jsonObject = json.loads(html)
         jsonArray = jsonObject.get("resultList")
