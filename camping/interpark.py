@@ -49,6 +49,7 @@ class Interpark():
 
         site_check_url = config.INTERPARK_SITE_CHECK_URL
         site_calendar = config.INTERPARK_SITE_CALENDAR        
+        
 
         thisMonth_startDate  = datetime.datetime.now().strftime('%Y%m')+"01"
         thisMonth_endDate  = datetime.datetime.now().strftime('%Y%m')+str(calendar.monthrange(int(datetime.datetime.now().strftime('%Y')),int(datetime.datetime.now().strftime('%m')))[1])
@@ -94,13 +95,13 @@ class Interpark():
 
                 if date_diff.days > -1 and (site_check_day[i].find(str(dw)) > -1 or config.HOLYDAY.find(playseq_date.date().strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(playseq_date.date().strftime('%Y-%m-%d'),site_name[i],site_not_chech_day_time[i],DAY_OF_WEEK[dw]) :
                     # empty site check & noti telegram & db save
-                    checkEnd = checkSite(check_url,p['playSeq'],site_name[i],playseq_date.date().strftime('%Y-%m-%d'),DAY_OF_WEEK[dw],seatGrade[i])
+                    checkEnd = checkSite(check_url,p['playSeq'],site_name[i],playseq_date.date().strftime('%Y-%m-%d'),DAY_OF_WEEK[dw],seatGrade[i],site_code[i])
                     if checkEnd :
                         break
 
         logger.warning('Interpark check ...')
 
-def checkSite(url,playseq,site_name,day_name,day_of_week,seatGrades):
+def checkSite(url,playseq,site_name,day_name,day_of_week,seatGrades,site_code):
     try:
         # print(url,playseq,site_name,day_name)
         url = url.replace("#PLAYSEQ#",str(playseq))
@@ -119,8 +120,9 @@ def checkSite(url,playseq,site_name,day_name,day_of_week,seatGrades):
 
                     sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
                     sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(r['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
-                    comm.executeDB(sqlText)
-                    comm.send_telegram_msg(site_name+" : "+day_name+":"+r['seatGradeName'] +" : "+day_of_week+" : "+str(r['remainCnt']))
+                    comm.executeDB(sqlText)                    
+                    link = config.INTERPARK_SITE_LINK+site_code
+                    comm.send_telegram_msg(site_name+" : "+day_name+":"+r['seatGradeName'] +" : "+day_of_week+" : "+str(r['remainCnt'])+"\n"+link)
             return False
         else:
             return True

@@ -110,7 +110,7 @@ def checkSite(site_name,day_name,day_of_week,remain_cnt):
         sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
         sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+remain_cnt+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
         comm.executeDB(sqlText)
-        comm.send_telegram_msg(site_name+" : "+day_name+" : "+day_of_week+" : "+remain_cnt)
+        comm.send_telegram_msg(site_name+" : "+day_name+" : "+day_of_week+" : "+remain_cnt+"\n"+config.GWANGMYEONG_SITE_LINK)
     except Exception as e:
         logger.error(e)
 
