@@ -38,7 +38,7 @@ GWANGMYEONG_SITE_CHECK_URL='https://reserve.gmuc.co.kr/user/camp/campReservation
 GWANGMYEONG_SITE_CHECK_DAY='5' # Friday (4) , Saturday (5)
 GWANGMYEONG_SITE_SESSION_KEY='A1195C1DEA8DFD2B0E1D4CB1142A20D2.worker2'
 GWANGMYEONG_SITE_SESSION_VALID = 0
-GWANGMYEONG_SITE_LINK='https://reserve.gmuc.co.kr/mobile/camp/campReservation.do?menu=d&menuFlag=C'
+GWANGMYEONG_SITE_LINK='https://reserve.gmuc.co.kr/mobile/login/login.do?menuFlag=C'
 
 # site Epoc
 EPOC_SITE_NAME='이포보오토캠핑장'
