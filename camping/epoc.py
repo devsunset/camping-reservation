@@ -73,9 +73,7 @@ class Epoc():
                 dw = reservation_date.weekday()
                 # Future day check  AND EPOC_SITE_CHECK_DAY check - Friday (4) , Saturday (5) AND HOLYDAY Check
 
-                if config.SKIP_DAY.find(reservation_date.strftime('%Y-%m-%d'))  > -1 :
-                        pass
-                else:
+                if (config.SKIP_DAY.find(reservation_date.strftime('%Y-%m-%d'))  > -1) == False :
                     if date_diff.days > 0 and (config.EPOC_SITE_CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(reservation_date.strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(reservation_date.strftime('%Y-%m-%d'),site_name,DAY_OF_WEEK[dw]) :
                         # 5. empty site check & noti telegram & db save
                         if list.get('reserve_ready_cnt') > 0:
