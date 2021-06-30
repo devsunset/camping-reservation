@@ -91,11 +91,10 @@ class Gwangmyeong():
                     dw = reservation_date.weekday()
                     # Future day check  AND GWANGMYEONG_SITE_CHECK_DAY check - Friday (4) , Saturday (5) AND HOLYDAY Check
                     
-                    if (config.SKIP_DAY.find(reservation_date.strftime('%Y-%m-%d'))  > -1) == False :
-                        if date_diff.days > 0 and (config.GWANGMYEONG_SITE_CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(reservation_date.strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(reservation_date.strftime('%Y-%m-%d')+":"+date_info[3].replace("'","" ),site_name,DAY_OF_WEEK[dw]) :
-                            # 5. empty site check & noti telegram & db save
-                            if txt.find('잔여 데크: 0') == -1:
-                                checkSite(site_name,reservation_date.strftime('%Y-%m-%d')+":"+date_info[3].replace("'","" ),DAY_OF_WEEK[dw],(txt[txt.find('잔여 데크:') +6:len(txt)-4]).replace(" ",""))
+                    if date_diff.days > 0 and (config.GWANGMYEONG_SITE_CHECK_DAY.find(str(dw)) > -1 or config.HOLYDAY.find(reservation_date.strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(reservation_date.strftime('%Y-%m-%d')+":"+date_info[3].replace("'","" ),site_name,DAY_OF_WEEK[dw]) :
+                        # 5. empty site check & noti telegram & db save
+                        if txt.find('잔여 데크: 0') == -1:
+                            checkSite(site_name,reservation_date.strftime('%Y-%m-%d'),reservation_date.strftime('%Y-%m-%d')+":"+date_info[3].replace("'","" ),DAY_OF_WEEK[dw],(txt[txt.find('잔여 데크:') +6:len(txt)-4]).replace(" ",""))
 
             if config.GWANGMYEONG_SITE_SESSION_VALID  == 1 :
                 config.GWANGMYEONG_SITE_SESSION_VALID = 0
@@ -103,7 +102,7 @@ class Gwangmyeong():
 
         logger.warning('Gwangmyeong check ...')
         
-def checkSite(site_name,day_name,day_of_week,remain_cnt):
+def checkSite(site_name,day_name_only,day_name,day_of_week,remain_cnt):
     try:
         # sqlText = 'delete from camping_meta where day_name="'+day_name+'" and day_of_week = "'+day_of_week+'" and site_name = "'+site_name+'"'
         # comm.executeDB(sqlText)
@@ -111,7 +110,8 @@ def checkSite(site_name,day_name,day_of_week,remain_cnt):
         sqlText = 'insert into camping_meta  (day_name,day_of_week,site_name,remain_cnt,crt_dttm)'
         sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+remain_cnt+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
         comm.executeDB(sqlText)
-        comm.send_telegram_msg(site_name+" : "+day_name+" : "+day_of_week+" : "+remain_cnt+"\n"+config.GWANGMYEONG_SITE_LINK)
+        if (config.SKIP_DAY.find(day_name_only)  > -1) == False :
+            comm.send_telegram_msg(site_name+" : "+day_name+" : "+day_of_week+" : "+remain_cnt+"\n"+config.GWANGMYEONG_SITE_LINK)
     except Exception as e:
         logger.error(e)
 

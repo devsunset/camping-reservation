@@ -92,12 +92,12 @@ class Interpark():
                 dw = playseq_date.weekday()
                 date_diff = playseq_date.date() - nowDate.date()
 
-                if (config.SKIP_DAY.find(playseq_date.date().strftime('%Y-%m-%d'))  > -1) == False :
-                    if date_diff.days > -1 and (site_check_day[i].find(str(dw)) > -1 or config.HOLYDAY.find(playseq_date.date().strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(playseq_date.date().strftime('%Y-%m-%d'),site_name[i],site_not_chech_day_time[i],DAY_OF_WEEK[dw]) :
-                        # empty site check & noti telegram & db save
-                        checkEnd = checkSite(check_url,p['playSeq'],site_name[i],playseq_date.date().strftime('%Y-%m-%d'),DAY_OF_WEEK[dw],seatGrade[i],site_code[i])
-                        if checkEnd :
-                            break
+                
+                if date_diff.days > -1 and (site_check_day[i].find(str(dw)) > -1 or config.HOLYDAY.find(playseq_date.date().strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(playseq_date.date().strftime('%Y-%m-%d'),site_name[i],site_not_chech_day_time[i],DAY_OF_WEEK[dw]) :
+                    # empty site check & noti telegram & db save
+                    checkEnd = checkSite(check_url,p['playSeq'],site_name[i],playseq_date.date().strftime('%Y-%m-%d'),DAY_OF_WEEK[dw],seatGrade[i],site_code[i])
+                    if checkEnd :
+                        break
 
         logger.warning('Interpark check ...')
 
@@ -122,7 +122,9 @@ def checkSite(url,playseq,site_name,day_name,day_of_week,seatGrades,site_code):
                     sqlText += ' values ("'+day_name+'","'+day_of_week+'","'+site_name+'","'+str(r['remainCnt'])+'","'+datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+'")'
                     comm.executeDB(sqlText)                    
                     link = config.INTERPARK_SITE_LINK+site_code
-                    comm.send_telegram_msg(site_name+" : "+day_name+":"+r['seatGradeName'] +" : "+day_of_week+" : "+str(r['remainCnt'])+"\n"+link)
+
+                    if (config.SKIP_DAY.find(day_name)  > -1) == False :
+                        comm.send_telegram_msg(site_name+" : "+day_name+":"+r['seatGradeName'] +" : "+day_of_week+" : "+str(r['remainCnt'])+"\n"+link)
             return False
         else:
             return True
