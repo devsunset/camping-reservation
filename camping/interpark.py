@@ -92,7 +92,9 @@ class Interpark():
                 dw = playseq_date.weekday()
                 date_diff = playseq_date.date() - nowDate.date()
 
-                if config.SKIP_DAY.find(playseq_date.date().strftime('%Y-%m-%d'))  < 1 :
+                if config.SKIP_DAY.find(playseq_date.date().strftime('%Y-%m-%d'))  > -1 :
+                    pass
+                else:
                     if date_diff.days > -1 and (site_check_day[i].find(str(dw)) > -1 or config.HOLYDAY.find(playseq_date.date().strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(playseq_date.date().strftime('%Y-%m-%d'),site_name[i],site_not_chech_day_time[i],DAY_OF_WEEK[dw]) :
                         # empty site check & noti telegram & db save
                         checkEnd = checkSite(check_url,p['playSeq'],site_name[i],playseq_date.date().strftime('%Y-%m-%d'),DAY_OF_WEEK[dw],seatGrade[i],site_code[i])
