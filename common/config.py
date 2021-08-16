@@ -48,5 +48,3 @@ EPOC_SITE_NAME='이포보오토캠핑장'
 EPOC_SITE_CHECK_URL='https://forest.maketicket.co.kr/event/event.do?command=event_view_schedule_list&idkey=5M7650&gd_seq=GD62&start=20210530&end=20210711'
 EPOC_SITE_CHECK_DAY='5' # Friday (4) , Saturday (5)
 EPOC_SITE_SESSION_KEY='D86E4DCDDE8BFB039ACFCF6A1BD25023'
-
-
