@@ -21,7 +21,7 @@ TELEGRAM_CHAT_ID =-1001646770464
 HOLYDAY='2021-12-25'
 
 # skip day
-SKIP_DAY='2021-12-24'
+SKIP_DAY='2022-01-01'
 
 # site  interpark (seperate comma)
 #INTERPARK_SITE_NAME='천왕산가족캠핑장,수도권매립지캠핑장,공릉관광지가족캠핑장,평택소풍정원캠핑장,안산화랑오토캠핑장,한탄강오토캠핑장,경기도청소년수련원캠핑장안산,평택내리캠핑장'
@@ -38,7 +38,7 @@ SKIP_DAY='2021-12-24'
 
 INTERPARK_SITE_NAME='천왕산가족캠핑장,수도권매립지캠핑장,공릉관광지가족캠핑장,평택소풍정원캠핑장,안산화랑오토캠핑장,한탄강오토캠핑장,경기도청소년수련원캠핑장안산,광주청소년야영장'
 INTERPARK_SITE_CODE='20006668,20003504,20008285,20011252,20004246,16014399,20003920,19005586'
-INTERPARK_SITE_CHECK_DAY='5,5,5,5,5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
+INTERPARK_SITE_CHECK_DAY='45,5,5,5,5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
 INTERPARK_SITE_SEAT_GRADE='1,1:2,1,1:2,1,1:2,1,2'
 INTERPARK_SITE_NOT_CHECK_DAY_TIME='10:10,15:14,15:11,15:10,01:13,01:13,27:14,18:14'
 
