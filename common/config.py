@@ -18,10 +18,10 @@ TELEGRAM_TOKEN = '2020114123:AAG557yWbe1g1e7ZFhZEsO6cn68_9HIozi8'
 TELEGRAM_CHAT_ID =-1001646770464
 
 # day_of_week and holyday
-HOLYDAY='2021-12-25'
+HOLYDAY='2022-03-01'
 
 # skip day
-SKIP_DAY='2021-12-18,2021-12-24,2021-12-31,2022-01-01'
+SKIP_DAY='2021-12-18,2021-12-24,2021-12-25,2021-12-31,2022-01-01'
 
 # site  interpark (seperate comma)
 INTERPARK_SITE_NAME='천왕산가족캠핑장,수도권매립지캠핑장,공릉관광지가족캠핑장,평택소풍정원캠핑장,안산화랑오토캠핑장,한탄강오토캠핑장,경기도청소년수련원캠핑장안산,광주청소년야영장'
