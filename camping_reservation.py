@@ -22,7 +22,6 @@ from os import path
 from common import config
 from camping import interpark
 from camping import gwangmyeong
-from camping import epoc
 from common import common
 
 ##################################################
@@ -37,7 +36,7 @@ logger = logging.getLogger('camping-reservation')
 
 interpark = interpark.Interpark()
 gwangmyeong = gwangmyeong.Gwangmyeong()
-epoc = epoc.Epoc()
+
 
 ##################################################
 
@@ -53,9 +52,6 @@ def main_process():
 
 # 천왕산가족캠핑장,수도권매립지캠핑장,공릉관광지가족캠핑장,평택소풍정원캠핑장,안산화랑오토캠핑장,인천두리캠핑장,한탄강오토캠핑장,경기도청소년수련원캠핑장안산,평택내리캠핑장
   interpark.emptySiteCheck()
-
-# 이포보오토캠핑장
-  # epoc.emptySiteCheck()
   
 #################################################
 # main

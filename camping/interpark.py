@@ -44,7 +44,6 @@ class Interpark():
         site_name = config.INTERPARK_SITE_NAME.split(',')        
         site_code = config.INTERPARK_SITE_CODE.split(',')        
         site_check_day = config.INTERPARK_SITE_CHECK_DAY.split(',')   
-        site_not_chech_day_time = config.INTERPARK_SITE_NOT_CHECK_DAY_TIME.split(',')
         seatGrade= config.INTERPARK_SITE_SEAT_GRADE.split(',')
 
         site_check_url = config.INTERPARK_SITE_CHECK_URL
@@ -93,7 +92,7 @@ class Interpark():
                 date_diff = playseq_date.date() - nowDate.date()
 
                 
-                if date_diff.days > -1 and (site_check_day[i].find(str(dw)) > -1 or config.HOLYDAY.find(playseq_date.date().strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(playseq_date.date().strftime('%Y-%m-%d'),site_name[i],site_not_chech_day_time[i],DAY_OF_WEEK[dw]) :
+                if date_diff.days > -1 and (site_check_day[i].find(str(dw)) > -1 or config.HOLYDAY.find(playseq_date.date().strftime('%Y-%m-%d')) > -1) and notPreCheckAndExceptionCheck(playseq_date.date().strftime('%Y-%m-%d'),site_name[i],DAY_OF_WEEK[dw]) :
                     # empty site check & noti telegram & db save
                     checkEnd = checkSite(check_url,p['playSeq'],site_name[i],playseq_date.date().strftime('%Y-%m-%d'),DAY_OF_WEEK[dw],seatGrade[i],site_code[i])
                     if checkEnd :
@@ -139,30 +138,12 @@ def checkExist(seatGrade, seatGrades):
             return True
     return False
 
-def notPreCheckAndExceptionCheck(day_name,site_name,site_not_check_day_time,day_of_week):
-    # aleady push send and db save check
-    # if str(day_name) == str(datetime.datetime.now().strftime('%Y-%m-%d')) :
-    #            sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(strftime("'"%Y-%m-%d 00:00:00"'", "'"now"'","'"localtime"'"))'
-    # else:
-    #     if int('0000')<= int(datetime.datetime.now().strftime('%H%M')) <=int('0600'):
-    #         sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(strftime("'"%Y-%m-%d 00:00:00"'", "'"now"'","'"localtime"'"))'
-    #     else:
-    #         if day_of_week == "토":
-    #             sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-30 minutes"'")'
-    #         else:
-    #             sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-360 minutes"'")'
-
+def notPreCheckAndExceptionCheck(day_name,site_name,day_of_week):
     sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-5 minutes"'")'
 
     df = comm.searchDB(sqlText)
     if df is not None:
         if len(df):
-            return False
-
-    day_time = site_not_check_day_time.split(':')
-     
-    if day_time[0] == datetime.datetime.now().strftime('%d'):
-        if int(day_time[1]+'00')<= int(datetime.datetime.now().strftime('%H%M')) <=int(day_time[1]+'05'):
             return False
 
     return True
