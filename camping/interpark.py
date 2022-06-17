@@ -73,7 +73,13 @@ class Interpark():
                     formattedDate = nowb.strftime("%Y%m%d%H%M")
                     # print('formattedDate  = '+formattedDate)
                     if int(x['bookableDate']) <= int(formattedDate) : 
-                        playInfo.append( {'playSeq':x['playSeq'], 'playDate':x['playDate']})
+                         if '천왕산가족캠핑장' == site_name[i]:
+                             playInfo.append( {'playSeq':x['playSeq'], 'playDate':x['playDate']})
+                         else:
+                             todayDate = nowb.strftime("%Y%m%d")
+                             if todayDate != x['playDate']:
+                                playInfo.append( {'playSeq':x['playSeq'], 'playDate':x['playDate']})
+                        
 
             jsonNextMonthText = comm.getCrawling(cal_url_nextMonth)
             jsonNextMonthObj = json.loads(jsonNextMonthText)
@@ -86,7 +92,12 @@ class Interpark():
                     formattedDate = nowb.strftime("%Y%m%d%H%M")
                     # print('formattedDate  = '+formattedDate)
                     if int(x['bookableDate']) <= int(formattedDate) : 
-                        playInfo.append( {'playSeq':x['playSeq'], 'playDate':x['playDate']})
+                        if '천왕산가족캠핑장' == site_name[i]:
+                            playInfo.append( {'playSeq':x['playSeq'], 'playDate':x['playDate']})
+                        else:
+                             todayDate = nowb.strftime("%Y%m%d")
+                             if todayDate != x['playDate']:
+                                playInfo.append( {'playSeq':x['playSeq'], 'playDate':x['playDate']})
 
             nowTime = datetime.datetime.now().strftime('%Y%m%d')
             nowDate = parse(nowTime)
