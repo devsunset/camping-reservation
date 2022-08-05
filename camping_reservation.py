@@ -47,11 +47,11 @@ def main_process():
   common.Common().executeDB(sqlText)
 
 # 도덕산캠핑장 (주석 처리 - 세션 생성한 서버로 호출 안하면 거부하게 처리 됨)
-  # if config.GWANGMYEONG_SITE_SESSION_VALID < 2:
-  #     gwangmyeong.emptySiteCheck()
+  if config.GWANGMYEONG_SITE_SESSION_VALID < 2:
+      gwangmyeong.emptySiteCheck()
 
 # 인터파크
-  interpark.emptySiteCheck()
+  # interpark.emptySiteCheck()
   
 #################################################
 # main
