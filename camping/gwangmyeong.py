@@ -59,6 +59,7 @@ class Gwangmyeong():
         nowDate = parse(nowTime)
         # print(nowDate.date())
 
+        print('-----------------------------')
         # 3. session invalid check
         if html.find('LOGIN_FAIL_CNT') > -1:
             logger.error('jessionid is invalid')
