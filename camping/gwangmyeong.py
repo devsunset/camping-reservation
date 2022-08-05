@@ -41,6 +41,7 @@ comm = common.Common()
 
 class Gwangmyeong():
     def emptySiteCheck(self):
+        print('-----------------xxxx')
         site_name = config.GWANGMYEONG_SITE_NAME       
         site_check_url = config.GWANGMYEONG_SITE_CHECK_URL
         site_session_key = config.GWANGMYEONG_SITE_SESSION_KEY

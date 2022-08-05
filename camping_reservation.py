@@ -46,7 +46,7 @@ def main_process():
   sqlText = 'delete from camping_meta where datetime(substr(day_name,0,11)) < datetime ("'"now"'" ,"'"localtime"'")'
   common.Common().executeDB(sqlText)
 
-# 도덕산캠핑장 (주석 처리 - 세션 생성한 서버로 호출 안하면 거부하게 처리 됨)
+# 도덕산캠핑장 (주석 처리 - 세션 생성한 서버로 호출 안하면 거부하게 처리 됨) 
   if config.GWANGMYEONG_SITE_SESSION_VALID < 2:
       gwangmyeong.emptySiteCheck()
 
