@@ -72,11 +72,12 @@ class Gwangmyeong():
         else:
         # 4. html parse - get site reservation  info
             bs = bs4.BeautifulSoup(html, 'html.parser')
+            print(bs)
             tags = bs.select('a')
             for i in range(len(tags)): 
                 txt = str(tags[i])
                 if txt.find('doDraw') > -1:
-                    print(txt)
+                    # print(txt)
                     date_info =  txt[txt.find('(')+1:txt.find(')')].split(',')
                     # print(date_info)
 
