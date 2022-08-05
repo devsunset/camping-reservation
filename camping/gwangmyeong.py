@@ -72,6 +72,7 @@ class Gwangmyeong():
         else:
         # 4. html parse - get site reservation  info
             bs = bs4.BeautifulSoup(html, 'html.parser')
+            print(bs)
             tags = bs.select('a')
             for i in range(len(tags)): 
                 txt = str(tags[i])
