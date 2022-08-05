@@ -41,7 +41,6 @@ comm = common.Common()
 
 class Gwangmyeong():
     def emptySiteCheck(self):
-        print('-----------------xxxx')
         site_name = config.GWANGMYEONG_SITE_NAME       
         site_check_url = config.GWANGMYEONG_SITE_CHECK_URL
         site_session_key = config.GWANGMYEONG_SITE_SESSION_KEY
@@ -60,7 +59,6 @@ class Gwangmyeong():
         nowDate = parse(nowTime)
         # print(nowDate.date())
 
-        print('-----------------------------')
         # 3. session invalid check
         if html.find('LOGIN_FAIL_CNT') > -1:
             logger.error('jessionid is invalid')
@@ -74,7 +72,6 @@ class Gwangmyeong():
         else:
         # 4. html parse - get site reservation  info
             bs = bs4.BeautifulSoup(html, 'html.parser')
-            print(bs)
             tags = bs.select('a')
             for i in range(len(tags)): 
                 txt = str(tags[i])
