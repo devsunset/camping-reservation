@@ -35,7 +35,7 @@ INTERPARK_SITE_LINK='https://tickets.interpark.com/goods/'
 # site Gwangmyeong
 GWANGMYEONG_SITE_NAME='도덕산캠핑장'
 GWANGMYEONG_SITE_CHECK_URL='https://reserve.gmuc.co.kr/user/camp/campReservation.do?menu=d&menuFlag=C'
-GWANGMYEONG_SITE_CHECK_DAY='2,5' # Friday (4) , Saturday (5)
+GWANGMYEONG_SITE_CHECK_DAY='5' # Friday (4) , Saturday (5)
 GWANGMYEONG_SITE_SESSION_KEY='3F88CFCA61AA2D7E9E3EF5B0F89CEFCB.worker2'
 GWANGMYEONG_SITE_SESSION_VALID = 0
 GWANGMYEONG_SITE_LINK='https://reserve.gmuc.co.kr/mobile/login/login.do?menuFlag=C'
