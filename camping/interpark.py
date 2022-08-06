@@ -160,6 +160,11 @@ def checkExist(seatGrade, seatGrades):
     return False
 
 def notPreCheckAndExceptionCheck(day_name,site_name,day_of_week):
+    # 당일 날짜  예약은 12시 전까지만  체크 
+    if day_name == datetime.datetime.now().strftime('%Y-%m-%d') :
+        if  int(datetime.datetime.now().strftime('%H'))  > 12 : 
+            return False
+
     sqlText = 'select id from camping_meta where day_name="'+day_name+'" and site_name="'+site_name+'" and crt_dttm > datetime(datetime ( "'"now"'", "'"localtime"'"), "'"-5 minutes"'")'
 
     df = comm.searchDB(sqlText)
