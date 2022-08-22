@@ -72,7 +72,7 @@ class Interpark():
                     nowb = datetime.datetime.now()
                     formattedDate = nowb.strftime("%Y%m%d%H%M")
                     # print('formattedDate  = '+formattedDate)
-                    if int(x['bookableDate']) <= int(formattedDate) : 
+                    if int(x['bookableDate']) <= int(formattedDate) and int(x['bookingEndDate']) >= int(formattedDate): 
                          if '천왕산가족캠핑장' == site_name[i]:
                              playInfo.append( {'playSeq':x['playSeq'], 'playDate':x['playDate']})
                          else:
@@ -91,7 +91,7 @@ class Interpark():
                     nowb = datetime.datetime.now()
                     formattedDate = nowb.strftime("%Y%m%d%H%M")
                     # print('formattedDate  = '+formattedDate)
-                    if int(x['bookableDate']) <= int(formattedDate) : 
+                    if int(x['bookableDate']) <= int(formattedDate) and int(x['bookingEndDate']) >= int(formattedDate):
                         if '천왕산가족캠핑장' == site_name[i]:
                             playInfo.append( {'playSeq':x['playSeq'], 'playDate':x['playDate']})
                         else:
