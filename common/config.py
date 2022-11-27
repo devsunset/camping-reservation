@@ -24,8 +24,8 @@ HOLYDAY='2022-05-05'
 SKIP_DAY='2022-02-26'
 
 # site  interpark (seperate comma)
-INTERPARK_SITE_NAME='천왕산가족캠핑장,수도권매립지캠핑장,공릉관광지가족캠핑장,한탄강오토캠핑장,경기도청소년수련원캠핑장안산'
-INTERPARK_SITE_CODE='21012652,20003504,20008285,21005592,20003920'
+INTERPARK_SITE_NAME='천왕산가족캠핑장,노을진(進)캠핑장,공릉관광지가족캠핑장,한탄강오토캠핑장,경기도청소년수련원캠핑장안산'
+INTERPARK_SITE_CODE='21012652,22011899,20008285,21005592,20003920'
 INTERPARK_SITE_CHECK_DAY='4:5,5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
 INTERPARK_SITE_SEAT_GRADE='1,1:2,1,1:2,1'
 INTERPARK_SITE_CHECK_URL='https://api-ticketfront.interpark.com/v1/goods/#INTERPARK_SITE_CODE#/playSeq/PlaySeq/#PLAYSEQ#/REMAINSEAT'
