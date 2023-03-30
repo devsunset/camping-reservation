@@ -6,7 +6,7 @@
 ##################################################
 
 # 프로그램 실행 주기
-INTERVAL_SECONDS = 5
+INTERVAL_SECONDS = 3
 
 # target db
 TARGET_DB = 'db/camping.db'
