@@ -31,7 +31,7 @@ SKIP_DAY='2023-05-20,2023-05-27,2023-06-10,2023-06-17'
 
 INTERPARK_SITE_NAME='천왕산가족캠핑장,노을진(進)캠핑장,한탄강오토캠핑장,경기도청소년수련원캠핑장안산,고양시킨텍스캠핑장,연천재인폭포오토캠핑장'
 INTERPARK_SITE_CODE='21012652,22011899,21005592,20003920,22005895,22016459'
-INTERPARK_SITE_CHECK_DAY='5,5,3:5,5,5,5,'      # Friday (4) , Saturday (5),  Sunday (6)
+INTERPARK_SITE_CHECK_DAY='5,5,5,5,5,5,'      # Friday (4) , Saturday (5),  Sunday (6)
 INTERPARK_SITE_SEAT_GRADE='1,1:2,1,1:2,1,1'
 
 
