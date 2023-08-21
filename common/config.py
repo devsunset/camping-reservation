@@ -29,17 +29,14 @@ SKIP_DAY='2023-08-05,2023-08-12,2023-08-19,2023-08-26,2023-09-02,2023-09-09,2023
 # INTERPARK_SITE_CHECK_DAY='5,5,5,5,5,5,5,5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
 # INTERPARK_SITE_SEAT_GRADE='1,1:2,2,1,1,1,1,1,1:2,1,3'
 
-
 INTERPARK_SITE_NAME='천왕산가족캠핑장,경기도청소년수련원캠핑장안산,한탄강오토캠핑장,연천재인폭포오토캠핑장,노을진(進)캠핑장'
 INTERPARK_SITE_CODE='21012652,20003920,21005592,22016459,22011899'
 INTERPARK_SITE_CHECK_DAY='5,5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
 INTERPARK_SITE_SEAT_GRADE='1,1,2,1,1:2'
 
-
 INTERPARK_SITE_CHECK_URL='https://api-ticketfront.interpark.com/v1/goods/#INTERPARK_SITE_CODE#/playSeq/PlaySeq/#PLAYSEQ#/REMAINSEAT'
 INTERPARK_SITE_CALENDAR='https://api-ticketfront.interpark.com/v1/goods/#INTERPARK_SITE_CODE#/playSeq?endDate=#END_DATE#&goodsCode=#INTERPARK_SITE_CODE#&page=1&pageSize=1550&preSale=false&startDate=#START_DATE#'
 INTERPARK_SITE_LINK='https://tickets.interpark.com/goods/'
-
 
 # site Gwangmyeong
 GWANGMYEONG_SITE_NAME='도덕산캠핑장'

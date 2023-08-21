@@ -21,7 +21,7 @@ from os import path
 
 from common import config
 from camping import interpark
-from camping import gwangmyeong
+# from camping import gwangmyeong
 from common import common
 
 ##################################################
@@ -36,7 +36,7 @@ logging.config.fileConfig(log_file_path)
 logger = logging.getLogger('camping-reservation')
 
 interpark = interpark.Interpark()
-gwangmyeong = gwangmyeong.Gwangmyeong()
+# gwangmyeong = gwangmyeong.Gwangmyeong()
 
 
 ##################################################
