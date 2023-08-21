@@ -143,8 +143,11 @@ def checkSite(url,playseq,site_name,day_name,day_of_week,seatGrades,site_code):
                     comm.executeDB(sqlText)                    
                     link = config.INTERPARK_SITE_LINK+site_code
 
-                    if (config.SKIP_DAY.find(day_name)  > -1) == False :
+                    if '천왕산가족캠핑장' == site_name:
                         comm.send_telegram_msg(site_name+" : "+day_name+":"+r['seatGradeName'] +" : "+day_of_week+" : "+str(r['remainCnt'])+"\n"+link)
+                    else:
+                        if (config.SKIP_DAY.find(day_name)  > -1) == False :
+                            comm.send_telegram_msg(site_name+" : "+day_name+":"+r['seatGradeName'] +" : "+day_of_week+" : "+str(r['remainCnt'])+"\n"+link)
             return False
         else:
             return True
