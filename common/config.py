@@ -31,7 +31,7 @@ SKIP_DAY='2023-09-02,2023-09-09,2023-09-30,2023-11-11,2023-11-25,2023-12-02'
 
 INTERPARK_SITE_NAME='천왕산가족캠핑장,경기도청소년수련원캠핑장안산,한탄강오토캠핑장,연천재인폭포오토캠핑장,노을진(進)캠핑장'
 INTERPARK_SITE_CODE='21012652,20003920,21005592,22016459,22011899'
-INTERPARK_SITE_CHECK_DAY='5,5,5,5,3:5'      # Friday (4) , Saturday (5),  Sunday (6)
+INTERPARK_SITE_CHECK_DAY='5,5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
 INTERPARK_SITE_SEAT_GRADE='1,1,2,1,1:2'
 
 INTERPARK_SITE_CHECK_URL='https://api-ticketfront.interpark.com/v1/goods/#INTERPARK_SITE_CODE#/playSeq/PlaySeq/#PLAYSEQ#/REMAINSEAT'
