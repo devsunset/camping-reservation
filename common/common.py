@@ -146,7 +146,8 @@ class Common():
     def getCrawling(self, url):
         html = ""
         try:
-            resp = requests.get(url)
+            user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36'
+            resp = requests.get(url,headers={'User-Agent': user_agent})
             html = resp.text
         except Exception as e:
             logger.error(' getCrawling Exception : %s' % e)
@@ -164,7 +165,8 @@ class Common():
             pass
 
         try:
-            resp = requests.get(url, cookies=cookies,verify=False)
+            user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36'
+            resp = requests.get(url, cookies=cookies,verify=False,headers={'User-Agent': user_agent})
             html = resp.text
         except Exception as e:
             logger.error(' getHttpsCrawling Exception : %s' % e)
