@@ -54,19 +54,16 @@ class Interpark():
         dt = datetime.datetime(int(datetime.datetime.now().strftime('%Y')), int(datetime.datetime.now().strftime('%m')), 1)
         nextMonth_startDate = ((dt.replace(day=1) + datetime.timedelta(days=32)).replace(day=1)).strftime('%Y%m%d')
         nextMonth_endDate = nextMonth_startDate[0:6]+str(calendar.monthrange(int(nextMonth_startDate[0:4]),int(nextMonth_startDate[4:6]))[1])
-        print("----------------1")
+
         for i in range(len(site_name)):
             check_url = site_check_url.replace('#INTERPARK_SITE_CODE#',site_code[i])
             cal_url_thisMonth = site_calendar.replace('#INTERPARK_SITE_CODE#',site_code[i]).replace('#START_DATE#',thisMonth_startDate).replace("#END_DATE#",thisMonth_endDate)
             cal_url_nextMonth = site_calendar.replace('#INTERPARK_SITE_CODE#',site_code[i]).replace('#START_DATE#',nextMonth_startDate).replace("#END_DATE#",nextMonth_endDate)
 
             playInfo = []
-            print("----------------2")
+
             jsonThisMonthText = comm.getCrawling(cal_url_thisMonth)
-            print("----------------3")
             jsonThisMonthObj = json.loads(jsonThisMonthText)
-            print( jsonThisMonthObj )
-            print("----------------4")
             dataThisMonth = jsonThisMonthObj['data']
 
             if len(dataThisMonth):
