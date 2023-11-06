@@ -146,7 +146,7 @@ class Common():
     def getCrawling(self, url):
         html = ""
         try:
-            user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36'
+            user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0'
             resp = requests.get(url,headers={'User-Agent': user_agent})
             html = resp.text
         except Exception as e:
