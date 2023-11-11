@@ -20,6 +20,7 @@ import requests
 import sqlite3
 import sys
 import telegram
+import asyncio
 import unicodedata
 import urllib3
 
@@ -129,7 +130,7 @@ class Common():
             # except Exception as e:
             #     chat_id = config.TELEGRAM_CHAT_ID
             # bot sendMessage
-            bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID, text=msg)
+            asyncio.run(bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID, text=msg))
             logger.warn(msg)
         except Exception as e:
             logger.error(' send_telegram_msg Exception : %s' % e)
