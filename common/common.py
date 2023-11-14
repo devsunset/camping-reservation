@@ -36,8 +36,7 @@ TARGET_DB = config.TARGET_DB
 ##################################################
 # delcare
 
-# telegram
-bot = telegram.Bot(token=config.TELEGRAM_TOKEN)
+
 
 # logging config
 log_file_path = path.join(path.dirname(path.abspath(__file__)), 'logging.conf')
@@ -48,7 +47,14 @@ logger = logging.getLogger('camping-reservation')
 
 ##################################################
 
+import asyncio
+
 class Common():
+    def __init__(self):
+        # Initialize your bot instance here
+        # telegram
+        self.bot = telegram.Bot(token=config.TELEGRAM_TOKEN)
+
     # search sql query - select
     def searchDB(self, sqlText, sqlParam=None, targetDB=TARGET_DB):
         columns = []
@@ -122,18 +128,26 @@ class Common():
         return cur.lastrowid
 
     # telegram message send
-    def send_telegram_msg(self, msg):
+    # def send_telegram_msg(self, msg):
+    #     try:
+    #         # bot.deleteWebhook()
+    #         # try:
+    #         #     chat_id = bot.getUpdates()[-1].message.chat.id                
+    #         # except Exception as e:
+    #         #     chat_id = config.TELEGRAM_CHAT_ID
+    #         # bot sendMessage
+    #         asyncio.run(bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID, text=msg))
+    #         logger.warn(msg)
+    #     except Exception as e:
+    #         logger.error(' send_telegram_msg Exception : %s' % e)
+    async def send_telegram_msg(self, msg):
         try:
-            # bot.deleteWebhook()
-            # try:
-            #     chat_id = bot.getUpdates()[-1].message.chat.id                
-            # except Exception as e:
-            #     chat_id = config.TELEGRAM_CHAT_ID
-            # bot sendMessage
-            asyncio.run(bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID, text=msg))
+            # Replace 'self.bot' with your actual bot instance
+            # Replace 'config.TELEGRAM_CHAT_ID' with your actual chat ID
+            await self.bot.send_message(chat_id=config.TELEGRAM_CHAT_ID, text=msg)
             logger.warn(msg)
         except Exception as e:
-            logger.error(' send_telegram_msg Exception : %s' % e)
+            logger.error('send_telegram_msg Exception: %s' % e)
 
     # log
     def log(self, msg, push_yn="Y"):
