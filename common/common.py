@@ -134,10 +134,12 @@ class Common():
             # except Exception as e:
             #     chat_id = config.TELEGRAM_CHAT_ID
             # bot sendMessage
-            asyncio.run(bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID, text=msg))
             logger.warn(msg)
+            asyncio.run(bot.sendMessage(chat_id=config.TELEGRAM_CHAT_ID, text=msg))
+           
         except Exception as e:
-            logger.error(' send_telegram_msg Exception : %s' % e)
+            # logger.error(' send_telegram_msg Exception : %s' % e)
+            pass
 
     # log
     def log(self, msg, push_yn="Y"):
