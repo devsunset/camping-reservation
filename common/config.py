@@ -21,7 +21,7 @@ TELEGRAM_CHAT_ID =-1001646770464
 HOLYDAY='2024-05-05' 
 
 # skip day 
-SKIP_DAY='2023-11-11,2023-11-25,2023-12-02' 
+SKIP_DAY='2023-11-25,2023-12-02' 
 
 # site  interpark (seperate comma)
 # INTERPARK_SITE_NAME='천왕산가족캠핑장,노을진(進)캠핑장,한탄강오토캠핑장,경기도청소년수련원캠핑장안산,고양시킨텍스캠핑장,연천재인폭포오토캠핑장,공릉관광지가족캠핑장,평택내리캠핑장,평택소풍정원캠핑장,평택진위천유원지캠핑장,안성맞춤캠핑장'
@@ -34,10 +34,15 @@ SKIP_DAY='2023-11-11,2023-11-25,2023-12-02'
 # INTERPARK_SITE_CHECK_DAY='5,5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
 # INTERPARK_SITE_SEAT_GRADE='1,1,2,1,1:2'
 
-INTERPARK_SITE_NAME='천왕산가족캠핑장,경기도청소년수련원캠핑장안산,한탄강오토캠핑장,연천재인폭포오토캠핑장'
-INTERPARK_SITE_CODE='21012652,20003920,21005592,22016459'
-INTERPARK_SITE_CHECK_DAY='5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
-INTERPARK_SITE_SEAT_GRADE='1,1,2,1'
+# INTERPARK_SITE_NAME='천왕산가족캠핑장,경기도청소년수련원캠핑장안산,한탄강오토캠핑장,연천재인폭포오토캠핑장'
+# INTERPARK_SITE_CODE='21012652,20003920,21005592,22016459'
+# INTERPARK_SITE_CHECK_DAY='5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
+# INTERPARK_SITE_SEAT_GRADE='1,1,2,1'
+
+INTERPARK_SITE_NAME='천왕산가족캠핑장,한탄강오토캠핑장,연천재인폭포오토캠핑장'
+INTERPARK_SITE_CODE='21012652,21005592,22016459'
+INTERPARK_SITE_CHECK_DAY='5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
+INTERPARK_SITE_SEAT_GRADE='1,2,1'
 
 INTERPARK_SITE_CHECK_URL='https://api-ticketfront.interpark.com/v1/goods/#INTERPARK_SITE_CODE#/playSeq/PlaySeq/#PLAYSEQ#/REMAINSEAT'
 INTERPARK_SITE_CALENDAR='https://api-ticketfront.interpark.com/v1/goods/#INTERPARK_SITE_CODE#/playSeq?endDate=#END_DATE#&goodsCode=#INTERPARK_SITE_CODE#&page=1&pageSize=1550&preSale=false&startDate=#START_DATE#'
