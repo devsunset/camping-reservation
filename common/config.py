@@ -24,20 +24,15 @@ HOLYDAY='2024-05-05'
 SKIP_DAY='2023-12-02,2023-12-09,2023-12-16,2023-12-23,2023-12-30' 
 
 # site  interpark (seperate comma)
-# INTERPARK_SITE_NAME='천왕산가족캠핑장,노을진(進)캠핑장,한탄강오토캠핑장,경기도청소년수련원캠핑장안산,고양시킨텍스캠핑장,연천재인폭포오토캠핑장,공릉관광지가족캠핑장,평택내리캠핑장,평택소풍정원캠핑장,평택진위천유원지캠핑장,안성맞춤캠핑장'
-# INTERPARK_SITE_CODE='21012652,22011899,21005592,20003920,22005895,22016459,20008285,20003499,20011252,21009223,20004468'
-# INTERPARK_SITE_CHECK_DAY='5,5,5,5,5,5,5,5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
-# INTERPARK_SITE_SEAT_GRADE='1,1:2,2,1,1,1,1,1,1:2,1,3'
+# INTERPARK_SITE_NAME='천왕산가족캠핑장,노을진(進)캠핑장,한탄강오토캠핑장,고양시킨텍스캠핑장,연천재인폭포오토캠핑장,공릉관광지가족캠핑장,평택내리캠핑장,평택소풍정원캠핑장,평택진위천유원지캠핑장,안성맞춤캠핑장'
+# INTERPARK_SITE_CODE='21012652,22011899,21005592,22005895,22016459,20008285,20003499,20011252,21009223,20004468'
+# INTERPARK_SITE_CHECK_DAY='5,5,5,5,5,5,5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
+# INTERPARK_SITE_SEAT_GRADE='1,1:2,2,1,1,1,1,1:2,1,3'
 
-# INTERPARK_SITE_NAME='천왕산가족캠핑장,경기도청소년수련원캠핑장안산,한탄강오토캠핑장,연천재인폭포오토캠핑장,노을진(進)캠핑장'
-# INTERPARK_SITE_CODE='21012652,20003920,21005592,22016459,22011899'
-# INTERPARK_SITE_CHECK_DAY='5,5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
-# INTERPARK_SITE_SEAT_GRADE='1,1,2,1,1:2'
-
-# INTERPARK_SITE_NAME='천왕산가족캠핑장,경기도청소년수련원캠핑장안산,한탄강오토캠핑장,연천재인폭포오토캠핑장'
-# INTERPARK_SITE_CODE='21012652,20003920,21005592,22016459'
+# INTERPARK_SITE_NAME='천왕산가족캠핑장,한탄강오토캠핑장,연천재인폭포오토캠핑장,노을진(進)캠핑장'
+# INTERPARK_SITE_CODE='21012652,21005592,22016459,22011899'
 # INTERPARK_SITE_CHECK_DAY='5,5,5,5'      # Friday (4) , Saturday (5),  Sunday (6)
-# INTERPARK_SITE_SEAT_GRADE='1,1,2,1'
+# INTERPARK_SITE_SEAT_GRADE='1,2,1,1:2'
 
 INTERPARK_SITE_NAME='천왕산가족캠핑장,한탄강오토캠핑장,연천재인폭포오토캠핑장'
 INTERPARK_SITE_CODE='21012652,21005592,22016459'
