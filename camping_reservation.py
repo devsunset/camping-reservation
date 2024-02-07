@@ -21,7 +21,6 @@ from os import path
 
 from common import config
 from camping import interpark
-# from camping import gwangmyeong
 from common import common
 
 ##################################################
@@ -36,8 +35,6 @@ logging.config.fileConfig(log_file_path)
 logger = logging.getLogger('camping-reservation')
 
 interpark = interpark.Interpark()
-# gwangmyeong = gwangmyeong.Gwangmyeong()
-
 
 ##################################################
 
@@ -46,12 +43,7 @@ def main_process():
     # old data delete
     sqlText = 'delete from camping_meta where datetime(substr(day_name,0,11)) < datetime ("'"now"'" ,"'"localtime"'")'
     common.Common().executeDB(sqlText)
-
-# 도덕산캠핑장 (주석 처리 -  Max retries exceeded with url  Connection refused )
-    # if config.GWANGMYEONG_SITE_SESSION_VALID < 2:
-    #     gwangmyeong.emptySiteCheck()
-
-# 인터파크
+    # 인터파크
     interpark.emptySiteCheck()
 
 
