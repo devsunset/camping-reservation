@@ -153,32 +153,56 @@ class Common():
     def getCrawling(self, url):
         html = ""
         try:
-            user_agent = 'Mozilla/5.0'
-            # user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0'
-            # accept =  'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
-            # accept_encoding = 'gzip, deflate, br'
-            # accept_language = 'ko-KR,en-US;q=0.7,en;q=0.3'
-            # cache_control = 'no-cache'
-            # cookie = 'OAX=0+rEpGMCw9EABFcM; pcid=166112558612119550; _trs_id=eY144%3E%3F04204%3F5473; _ga_4SKTL7E8Q8=GS1.1.1692774311.9.1.1692775063.5.0.0; _ga=GA1.2.1467706746.1661125590; ab.storage.deviceId.cd97b079-ff05-4967-873a-324050c2a198=%7B%22g%22%3A%22a1907f53-257c-0c55-1180-db7f1efe1101%22%2C%22c%22%3A1661125590550%2C%22l%22%3A1692774322428%7D; cto_bundle=UTWrAF9yUmtFcldWa3AyV3IwbHNYcyUyRkNua3dObVNqTnBKUHRtJTJCZlpzVWhXdnJtVEdnaUJUaXFOQll2eDJEb1JQTzJhZGNuWllHam1Ydk1SUGhHSllQZGJkQ0xkYiUyRjJIeVZiRSUyQlFmbDVSTjR4eFppRVRFW??FFNytMYjVSeVpudz09Iiwic2lkIjoiSzFMT25xYnA0SDQzUGE0YmV1akhqcVI5VGtCNFdva2FVRXBKSWxjdk5aST0ifQ.SNGstZwKnzBLkEToDjR9teO_Es6rncs0wIG9-44UI1cCgBgsaYz2loHEAuJp4X960Aw9T9px--6GYz719wFeyqxDGvtIZiF-WxgaQhGWsoxZxLIQlRjszoI90XYRpVyP9e4oqMw7geA5oeQ-uhyfMsL5lqBwDQ5S-7kV5VNIk8VSGInhwMRYzRSGvUGNvd7ONnbZDhoJBQd4AOi962PCIGIKmNB0JbyeOHKetgArQ7UliGOFi47J_Iyy2NOikO6tcV5YYFaDnQUrsGCTPwI1L9DmRNVAUfk5IQrPniDQ2xVSONAxNoWoLU0KNOAmx1n69yV-sbI2p1ESWLvEPRk2LA; q_interparkID=GX1YZbxOxcMaQgoHvt7pCA%3D%3D; q_imfs_pcid=557391482322639895'
-            # resp = requests.get(url,headers={'User-Agent': user_agent,'Accept':accept,'Accept-Encoding':accept_encoding,'Accept-Language':accept_language,'Cache-Control':cache_control,'Cookie':cookie})
-           
-            # session_obj = requests.Session()
-            # resp = session_obj.get(url,headers={'User-Agent': user_agent})
-            # resp = requests.get(url,headers={'User-Agent': user_agent})
+            requests.packages.urllib3.disable_warnings()
+            requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
+            requests.packages.urllib3.contrib.pyopenssl.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
+        except AttributeError:
+            # no pyopenssl support used / needed / available
+            pass
 
+        try:
+            user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36'
 
             proxies = {
-                'http': 'http://121.159.146.251'
+                'http': 'http://43.202.154.212'
             }
 
-            # 요청 보내기
-            resp = requests.get(url,headers={'User-Agent':user_agent}, proxies=proxies)
-
-
+            resp = requests.get(url, cookies=None,verify=False,headers={'User-Agent': user_agent}, proxies=proxies)
             html = resp.text
         except Exception as e:
-            logger.error(' getCrawling Exception : %s' % e)
+            logger.error(' getHttpsCrawling Exception : %s' % e)
         return html
+
+    
+    # def getCrawling(self, url):
+    #     html = ""
+    #     try:
+    #         user_agent = 'Mozilla/5.0'
+    #         # user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0'
+    #         # accept =  'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
+    #         # accept_encoding = 'gzip, deflate, br'
+    #         # accept_language = 'ko-KR,en-US;q=0.7,en;q=0.3'
+    #         # cache_control = 'no-cache'
+    #         # cookie = 'OAX=0+rEpGMCw9EABFcM; pcid=166112558612119550; _trs_id=eY144%3E%3F04204%3F5473; _ga_4SKTL7E8Q8=GS1.1.1692774311.9.1.1692775063.5.0.0; _ga=GA1.2.1467706746.1661125590; ab.storage.deviceId.cd97b079-ff05-4967-873a-324050c2a198=%7B%22g%22%3A%22a1907f53-257c-0c55-1180-db7f1efe1101%22%2C%22c%22%3A1661125590550%2C%22l%22%3A1692774322428%7D; cto_bundle=UTWrAF9yUmtFcldWa3AyV3IwbHNYcyUyRkNua3dObVNqTnBKUHRtJTJCZlpzVWhXdnJtVEdnaUJUaXFOQll2eDJEb1JQTzJhZGNuWllHam1Ydk1SUGhHSllQZGJkQ0xkYiUyRjJIeVZiRSUyQlFmbDVSTjR4eFppRVRFW??FFNytMYjVSeVpudz09Iiwic2lkIjoiSzFMT25xYnA0SDQzUGE0YmV1akhqcVI5VGtCNFdva2FVRXBKSWxjdk5aST0ifQ.SNGstZwKnzBLkEToDjR9teO_Es6rncs0wIG9-44UI1cCgBgsaYz2loHEAuJp4X960Aw9T9px--6GYz719wFeyqxDGvtIZiF-WxgaQhGWsoxZxLIQlRjszoI90XYRpVyP9e4oqMw7geA5oeQ-uhyfMsL5lqBwDQ5S-7kV5VNIk8VSGInhwMRYzRSGvUGNvd7ONnbZDhoJBQd4AOi962PCIGIKmNB0JbyeOHKetgArQ7UliGOFi47J_Iyy2NOikO6tcV5YYFaDnQUrsGCTPwI1L9DmRNVAUfk5IQrPniDQ2xVSONAxNoWoLU0KNOAmx1n69yV-sbI2p1ESWLvEPRk2LA; q_interparkID=GX1YZbxOxcMaQgoHvt7pCA%3D%3D; q_imfs_pcid=557391482322639895'
+    #         # resp = requests.get(url,headers={'User-Agent': user_agent,'Accept':accept,'Accept-Encoding':accept_encoding,'Accept-Language':accept_language,'Cache-Control':cache_control,'Cookie':cookie})
+           
+    #         # session_obj = requests.Session()
+    #         # resp = session_obj.get(url,headers={'User-Agent': user_agent})
+    #         # resp = requests.get(url,headers={'User-Agent': user_agent})
+
+
+    #         proxies = {
+    #             'http': 'http://121.159.146.251'
+    #         }
+
+    #         # 요청 보내기
+    #         resp = requests.get(url,headers={'User-Agent':user_agent}, proxies=proxies)
+
+
+    #         html = resp.text
+    #     except Exception as e:
+    #         logger.error(' getCrawling Exception : %s' % e)
+    #     return html
 
     # sert crawling
     def getSertCrawling(self, url, cookies=None):
