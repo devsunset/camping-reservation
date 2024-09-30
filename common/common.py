@@ -167,7 +167,8 @@ class Common():
                 'http': 'http://43.202.154.212'
             }
 
-            resp = requests.get(url, cookies=None,verify=False,headers={'User-Agent': user_agent}, proxies=proxies)
+            # resp = requests.get(url, cookies=None,verify=False,headers={'User-Agent': user_agent}, proxies=proxies)
+            resp = requests.get(url, cookies=None,verify=False,headers={'User-Agent': user_agent})
             html = resp.text
         except Exception as e:
             logger.error(' getHttpsCrawling Exception : %s' % e)

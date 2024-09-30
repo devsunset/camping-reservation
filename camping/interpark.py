@@ -61,7 +61,6 @@ class Interpark():
             cal_url_nextMonth = site_calendar.replace('#INTERPARK_SITE_CODE#',site_code[i]).replace('#START_DATE#',nextMonth_startDate).replace("#END_DATE#",nextMonth_endDate)
 
             playInfo = []
-
             jsonThisMonthText = comm.getCrawling(cal_url_thisMonth)
             jsonThisMonthObj = json.loads(jsonThisMonthText)
             dataThisMonth = jsonThisMonthObj['data']
@@ -104,7 +103,8 @@ class Interpark():
 
             if len(playInfo):
                 if '천왕산가족캠핑장' == site_name[i]:
-                    playInfo.insert(0,{'playSeq':int(playInfo[0]['playSeq'])-1,'playDate':nowTime})
+                    # playInfo.insert(0,{'playSeq':int(playInfo[0]['playSeq'])-1,'playDate':nowTime})
+                    playInfo.insert(0,{'playSeq':(playInfo[0]['playSeq']),'playDate':nowTime})
 
             for p in playInfo:
                 # print(p['playSeq'],p['playDate'])
