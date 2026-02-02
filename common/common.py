@@ -23,6 +23,8 @@ import telegram
 import asyncio
 import unicodedata
 import urllib3
+import random
+import time
 
 from common import config
 # import config
@@ -149,31 +151,81 @@ class Common():
         else:
             logger.warning(msg)
 
-    # crawling
     def getCrawling(self, url):
         html = ""
         try:
+            # SSL 경고 및 사이퍼 설정 (기존 로직 유지)
             requests.packages.urllib3.disable_warnings()
-            requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
-            requests.packages.urllib3.contrib.pyopenssl.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
-        except AttributeError:
-            # no pyopenssl support used / needed / available
-            pass
+            try:
+                requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
+                requests.packages.urllib3.contrib.pyopenssl.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
+            except AttributeError:
+                pass
 
-        try:
-            user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36'
+            # 차단 회피를 위한 핵심 설정 1: 다양한 User-Agent 랜덤 선택
+            user_agents = [
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Edge/119.0.0.0'
+            ]
 
-            proxies = {
-                'http': 'http://43.202.154.212'
+            # 차단 회피를 위한 핵심 설정 2: 브라우저처럼 보이게 하는 필수 헤더들
+            headers = {
+                'User-Agent': random.choice(user_agents),
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+                'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
+                'Referer': 'https://www.google.com/', # 유입 경로 세탁
+                'Connection': 'keep-alive'
             }
 
-            # resp = requests.get(url, cookies=None,verify=False,headers={'User-Agent': user_agent}, proxies=proxies)
-            resp = requests.get(url, cookies=None,verify=False,headers={'User-Agent': user_agent})
-            html = resp.text
-            print(html)
+            # 차단 회피를 위한 핵심 설정 3: 요청 전 랜덤 지연 (0.5~1.5초)
+            # 너무 일정한 속도로 요청하면 기계로 판단합니다.
+            time.sleep(random.uniform(0.5, 1.5))
+
+            # 세션을 사용하여 쿠키를 자동으로 관리 (단발성 requests.get보다 안전함)
+            session = requests.Session()
+            
+            # 실제 요청 수행 (기존 로직에서 headers와 timeout 추가)
+            resp = session.get(url, cookies=None, verify=False, headers=headers, timeout=10)
+            
+            # 상태 확인 및 결과 반환
+            if resp.status_code == 200:
+                html = resp.text
+                # print(html) # 결과가 너무 길면 주석 처리하세요
+            else:
+                logger.error(f' 차단됨 또는 오류 발생 (Status Code: {resp.status_code})')
+
         except Exception as e:
+            # 기존 logger 형식 유지
             logger.error(' getHttpsCrawling Exception : %s' % e)
+            
         return html
+
+    # crawling
+    # def getCrawling(self, url):
+    #     html = ""
+    #     try:
+    #         requests.packages.urllib3.disable_warnings()
+    #         requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
+    #         requests.packages.urllib3.contrib.pyopenssl.util.ssl_.DEFAULT_CIPHERS += ':HIGH:!DH:!aNULL'
+    #     except AttributeError:
+    #         # no pyopenssl support used / needed / available
+    #         pass
+
+    #     try:
+    #         user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36'
+
+    #         proxies = {
+    #             'http': 'http://43.202.154.212'
+    #         }
+
+    #         # resp = requests.get(url, cookies=None,verify=False,headers={'User-Agent': user_agent}, proxies=proxies)
+    #         resp = requests.get(url, cookies=None,verify=False,headers={'User-Agent': user_agent})
+    #         html = resp.text
+    #         print(html)
+    #     except Exception as e:
+    #         logger.error(' getHttpsCrawling Exception : %s' % e)
+    #     return html
 
     
     # def getCrawling(self, url):
