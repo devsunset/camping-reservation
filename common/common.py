@@ -170,6 +170,7 @@ class Common():
             # resp = requests.get(url, cookies=None,verify=False,headers={'User-Agent': user_agent}, proxies=proxies)
             resp = requests.get(url, cookies=None,verify=False,headers={'User-Agent': user_agent})
             html = resp.text
+            print(html)
         except Exception as e:
             logger.error(' getHttpsCrawling Exception : %s' % e)
         return html
