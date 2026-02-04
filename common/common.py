@@ -8,23 +8,19 @@
 ##################################################
 # import
 
-import bs4
-from pandas import DataFrame
+import asyncio
 import datetime
 import logging
 import logging.config
-import math
-from os import path
-import random
-import requests
-import sqlite3
-import sys
-import telegram
-import asyncio
-import unicodedata
-import urllib3
 import random
 import time
+from os import path
+
+import bs4
+import requests
+import telegram
+from pandas import DataFrame
+import sqlite3
 
 from common import config
 # import config
@@ -52,79 +48,73 @@ bot = telegram.Bot(token=config.TELEGRAM_TOKEN)
 
 ##################################################
 
-import asyncio
 
 class Common():
     # search sql query - select
     def searchDB(self, sqlText, sqlParam=None, targetDB=TARGET_DB):
-        columns = []
-        result = []
+        conn = None
         try:
             conn = sqlite3.connect(targetDB)
             cur = conn.cursor()
-            sql = sqlText
-            if sqlParam == None:
-                cur.execute(sql)
+            if sqlParam is None:
+                cur.execute(sqlText)
+            elif isinstance(sqlParam, tuple):
+                cur.execute(sqlText, sqlParam)
             else:
-              if str(type(sqlParam)) == "<class 'tuple'>":                    
-                cur.execute(sql, sqlParam)
-              else:
-                cur.executemany(sql,sqlParam)
-            columns = list(map(lambda x: x[0], cur.description))
+                cur.executemany(sqlText, sqlParam)
             result = cur.fetchall()
-            df = DataFrame.from_records(data=result, columns=columns)
+            if cur.description:
+                columns = [x[0] for x in cur.description]
+                return DataFrame.from_records(data=result, columns=columns)
         finally:
-          if conn is not None:
-            conn.close()
-        return df
+            if conn is not None:
+                conn.close()
+        return None
 
     # execute sql query - insert/update/delete
     def executeDB(self, sqlText, sqlParam=None, targetDB=TARGET_DB):
+        conn = None
+        lastrowid = None
         try:
-          conn = sqlite3.connect(targetDB)
-          cur = conn.cursor()
-          sql = sqlText
-          if sqlParam == None:
-              cur.execute(sql)
-          else:
-              if str(type(sqlParam)) == "<class 'tuple'>":    
-                cur.execute(sql, sqlParam)
-              else:
-                cur.executemany(sql,sqlParam)
-          conn.commit()
-        finally:
-          if conn is not None:
-            conn.close()
-        return cur.lastrowid
-
-    # search sql query - select
-    def searchTxDB(self, conn, sqlText, sqlParam=None):
-        columns = []
-        result = []
-        cur = conn.cursor()
-        sql = sqlText
-        if sqlParam == None:
-            cur.execute(sql)
-        else:
-            if str(type(sqlParam)) == "<class 'tuple'>":    
-                cur.execute(sql, sqlParam)
+            conn = sqlite3.connect(targetDB)
+            cur = conn.cursor()
+            if sqlParam is None:
+                cur.execute(sqlText)
+            elif isinstance(sqlParam, tuple):
+                cur.execute(sqlText, sqlParam)
             else:
-                cur.executemany(sql,sqlParam)
-        columns = list(map(lambda x: x[0], cur.description))
-        result = cur.fetchall()
-        return DataFrame.from_records(data=result, columns=columns)
+                cur.executemany(sqlText, sqlParam)
+            conn.commit()
+            lastrowid = cur.lastrowid
+        finally:
+            if conn is not None:
+                conn.close()
+        return lastrowid
 
-    # execute sql query - insert/update/delete
+    # search sql query - select (transaction)
+    def searchTxDB(self, conn, sqlText, sqlParam=None):
+        cur = conn.cursor()
+        if sqlParam is None:
+            cur.execute(sqlText)
+        elif isinstance(sqlParam, tuple):
+            cur.execute(sqlText, sqlParam)
+        else:
+            cur.executemany(sqlText, sqlParam)
+        result = cur.fetchall()
+        if cur.description:
+            columns = [x[0] for x in cur.description]
+            return DataFrame.from_records(data=result, columns=columns)
+        return None
+
+    # execute sql query - insert/update/delete (transaction)
     def executeTxDB(self, conn, sqlText, sqlParam=None):
         cur = conn.cursor()
-        sql = sqlText
-        if sqlParam == None:
-            cur.execute(sql)
+        if sqlParam is None:
+            cur.execute(sqlText)
+        elif isinstance(sqlParam, tuple):
+            cur.execute(sqlText, sqlParam)
         else:
-            if str(type(sqlParam)) == "<class 'tuple'>":    
-                cur.execute(sql, sqlParam)
-            else:   
-                cur.executemany(sql,sqlParam)
+            cur.executemany(sqlText, sqlParam)
         return cur.lastrowid
 
     # telegram message send

@@ -48,22 +48,17 @@ def db_init():
     conn = None
     try:
         conn = sqlite3.connect(TARGET_DB)
-        try:
-            sqlText = 'drop table camping_meta'
-            common.executeTxDB(conn, sqlText)
-        except Exception as e:
-            logging.error(' Exception : %s' % e)
-            pass
-
-        sqlText = 'create table camping_meta (id integer primary key autoincrement, day_name text, day_of_week text, site_name text, remain_cnt text, crt_dttm text)'
-        common.executeTxDB(conn, sqlText)
+        common.executeTxDB(conn, 'DROP TABLE IF EXISTS camping_meta')
+        common.executeTxDB(conn, (
+            'CREATE TABLE camping_meta (id INTEGER PRIMARY KEY AUTOINCREMENT, '
+            'day_name TEXT, day_of_week TEXT, site_name TEXT, remain_cnt TEXT, crt_dttm TEXT)'
+        ))
         conn.commit()
     except Exception as e:
         logging.error(' Exception : %s' % e)
     finally:
         if conn is not None:
             conn.close()
-
     logger.warning('db_init completed...')
 
 
